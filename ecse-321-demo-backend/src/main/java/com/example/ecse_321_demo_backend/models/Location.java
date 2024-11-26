@@ -12,23 +12,25 @@ import java.util.UUID;
 @Entity
 public class Location {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
-  @ManyToOne
-  private User created_by;
+    @ManyToOne
+    private UserAccount created_by;
 
-  private Timestamp created_at;
+    private Timestamp created_at;
 
-  private String description;
+    private String description;
 
-  private Integer capacity;
+    private Integer capacity;
 
-  public Location(User creator, String description, Integer capacity) {
-    this.created_by = creator;
-    this.created_at = Timestamp.from(Instant.now());
-    this.description = description;
-    this.capacity = capacity;
-  }
+    public Location() {}
+
+    public Location(UserAccount creator, String description, Integer capacity) {
+        this.created_by = creator;
+        this.created_at = Timestamp.from(Instant.now());
+        this.description = description;
+        this.capacity = capacity;
+    }
 }

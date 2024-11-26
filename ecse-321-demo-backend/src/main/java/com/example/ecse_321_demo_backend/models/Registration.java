@@ -10,32 +10,32 @@ import jakarta.persistence.MapsId;
 @Entity
 public class Registration {
 
-  @EmbeddedId
-  private RegistrationId id;
+    @EmbeddedId
+    private RegistrationId id;
 
-  @ManyToOne
-  @MapsId("eventId")
-  @JoinColumn(name = "event_id")
-  private Event event;
+    @ManyToOne
+    @MapsId("eventId")
+    @JoinColumn(name = "event_id")
+    private Event event;
 
-  @ManyToOne
-  @MapsId("userId")
-  @JoinColumn(name = "user_id")
-  private User user;
+    @ManyToOne
+    @MapsId("userId")
+    @JoinColumn(name = "user_id")
+    private UserAccount user;
 
-  public Registration() {}
+    public Registration() {}
 
-  public Registration(Event event, User user) {
-    this.id = new RegistrationId();
-    this.event = event;
-    this.user = user;
-  }
+    public Registration(Event event, UserAccount user) {
+        this.id = new RegistrationId();
+        this.event = event;
+        this.user = user;
+    }
 
-  public Event getEvent() {
-    return event;
-  }
+    public Event getEvent() {
+        return event;
+    }
 
-  public User getUser() {
-    return user;
-  }
+    public UserAccount getUser() {
+        return user;
+    }
 }

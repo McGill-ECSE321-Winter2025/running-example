@@ -26,7 +26,7 @@ public abstract class Event {
   private UUID id;
 
   @ManyToOne
-  private User created_by;
+  private UserAccount created_by;
 
   private Timestamp created_at;
 
@@ -39,7 +39,7 @@ public abstract class Event {
   public Event() {}
 
   public Event(
-    User creator,
+    UserAccount creator,
     String description,
     Timestamp start_time,
     Timestamp end_time
