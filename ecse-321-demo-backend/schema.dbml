@@ -1,0 +1,48 @@
+Table locations {
+  id uuid [primary key]
+  created_by uuid
+  created_at timestamp
+  description text
+  capacity integer
+}
+
+Table events {
+  id uuid [primary key]
+  created_at timestamp
+  description text
+  start_time timestamp
+  end_time timestamp
+  location uuid
+}
+
+Table online_events {
+  id uuid
+}
+
+Table in_person_events {
+  id uuid
+}
+
+Table registration {
+  user_id uuid
+  event_id uuid
+
+  indexes {
+    (user_id, event_id) [pk]
+  }
+}
+
+Table users {
+  id uuid [primary key]
+  username varchar
+  password varchar
+  created_at timestamp
+}
+
+
+Ref: events.id < registration.event_id
+Ref: users.id < registration.user_id
+Ref: online_events.id > events.id
+Ref: in_person_events.id > events.id
+Ref: events.location > locations.id
+Ref: users.id < locations.created_by
