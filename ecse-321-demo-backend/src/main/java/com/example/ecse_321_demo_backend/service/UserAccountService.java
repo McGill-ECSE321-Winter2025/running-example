@@ -32,7 +32,6 @@ public class UserAccountService {
       throw new UsernameTakenException(cleanUsername);
     }
 
-    // Create new user account
     UserAccount newUser = new UserAccount(cleanUsername, cleanPassword);
 
     userAccountRepository.save(newUser);
