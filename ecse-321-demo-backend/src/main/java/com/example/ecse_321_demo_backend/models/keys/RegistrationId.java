@@ -13,6 +13,11 @@ public class RegistrationId implements Serializable {
 
     public RegistrationId() {}
 
+    public RegistrationId(UUID eventId, UUID userId) {
+        this.eventId = eventId;
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

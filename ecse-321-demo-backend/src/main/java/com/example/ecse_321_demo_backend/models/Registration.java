@@ -6,8 +6,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class Registration {
 
     @EmbeddedId
@@ -26,16 +28,8 @@ public class Registration {
     public Registration() {}
 
     public Registration(Event event, UserAccount user) {
-        this.id = new RegistrationId();
+        this.id = new RegistrationId(event.getId(), user.getId());
         this.event = event;
         this.user = user;
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public UserAccount getUser() {
-        return user;
     }
 }
