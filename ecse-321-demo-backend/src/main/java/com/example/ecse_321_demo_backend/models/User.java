@@ -6,16 +6,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
-public class UserAccount {
+public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
@@ -30,11 +25,12 @@ public class UserAccount {
   @OneToMany
   private List<Location> locations_created;
 
-  public UserAccount() {}
-
-  public UserAccount(String username, String password) {
+  public User(String username, String password) {
     this.username = username;
     this.password = password;
-    this.created_at = Timestamp.from(Instant.now());
+  }
+
+  public UUID getId() {
+    return id;
   }
 }
