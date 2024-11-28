@@ -17,24 +17,24 @@ import lombok.Setter;
 @Setter
 public class UserAccount {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
-  private String username;
+    private String username;
 
-  private String password;
+    private String password;
 
-  private Timestamp created_at;
+    private Timestamp created_at;
 
-  @OneToMany
-  private List<Location> locations_created;
+    @OneToMany
+    private List<Event> eventsCreated;
 
-  public UserAccount() {}
+    public UserAccount() {}
 
-  public UserAccount(String username, String password) {
-    this.username = username;
-    this.password = password;
-    this.created_at = Timestamp.from(Instant.now());
-  }
+    public UserAccount(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.created_at = Timestamp.from(Instant.now());
+    }
 }

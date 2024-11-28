@@ -18,34 +18,34 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserAccountRestController {
 
-  @Autowired
-  private UserAccountService userAccountService;
+    @Autowired
+    private UserAccountService userAccountService;
 
-  @PostMapping("/users")
-  public ResponseEntity<?> createUserAccount(
-    @RequestBody UserAccountRequest request
-  ) {
-    userAccountService.createUserAccount(
-      request.getUsername(),
-      request.getPassword()
-    );
-    return ResponseEntity.status(HttpStatus.CREATED).build();
-  }
+    @PostMapping("/users")
+    public ResponseEntity<?> createUserAccount(
+        @RequestBody UserAccountRequest request
+    ) {
+        userAccountService.createUserAccount(
+            request.getUsername(),
+            request.getPassword()
+        );
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
-  @DeleteMapping("/users/{userId}")
-  public ResponseEntity<?> deleteUserAccount(@PathVariable UUID userId) {
-    userAccountService.deleteUserAccount(userId);
-    return ResponseEntity.ok().build();
-  }
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity<?> deleteUserAccount(@PathVariable UUID userId) {
+        userAccountService.deleteUserAccount(userId);
+        return ResponseEntity.ok().build();
+    }
 
-  @PostMapping("/login")
-  public ResponseEntity<LoginResponse> login(
-    @RequestBody LoginRequest request
-  ) {
-    UserAccount user = userAccountService.login(
-      request.getUsername(),
-      request.getPassword()
-    );
-    return ResponseEntity.ok(new LoginResponse(user.getId()));
-  }
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(
+        @RequestBody LoginRequest request
+    ) {
+        UserAccount user = userAccountService.login(
+            request.getUsername(),
+            request.getPassword()
+        );
+        return ResponseEntity.ok(new LoginResponse(user.getId()));
+    }
 }
