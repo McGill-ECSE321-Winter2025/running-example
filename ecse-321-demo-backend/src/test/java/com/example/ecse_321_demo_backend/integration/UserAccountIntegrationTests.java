@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
@@ -21,85 +24,95 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class UserAccountIntegrationTests {
 
-  @LocalServerPort
-  private int port;
+    @LocalServerPort
+    private int port;
 
-  @Autowired
-  private TestRestTemplate restTemplate;
+    @Autowired
+    private TestRestTemplate restTemplate;
 
-  @Autowired
-  private UserAccountRepository userAccountRepository;
+    @Autowired
+    private UserAccountRepository userAccountRepository;
 
-  @AfterEach
-  public void clearDatabase() {
-    userAccountRepository.deleteAll();
-  }
+    @AfterEach
+    public void clearDatabase() {
+        userAccountRepository.deleteAll();
+    }
 
-  private String createURLWithPort(String uri) {
-    return "http://localhost:" + port + uri;
-  }
+    private String createURLWithPort(String uri) {
+        return "http://localhost:" + port + "/api" + uri;
+    }
 
-  @Test
-  public void testCreateUserAccount() {
-    UserAccountRequest request = new UserAccountRequest();
-    request.setUsername("newuser");
-    request.setPassword("password123");
+    @Test
+    public void testCreateUserAccount() {
+        UserAccountRequest request = new UserAccountRequest();
+        request.setUsername("newuser");
+        request.setPassword("password123");
 
-    ResponseEntity<?> response = restTemplate.postForEntity(
-      createURLWithPort("/users"),
-      request,
-      Void.class
-    );
+        ResponseEntity<?> response = restTemplate.postForEntity(
+            createURLWithPort("/users"),
+            request,
+            Void.class
+        );
 
-    assertEquals(HttpStatus.CREATED, response.getStatusCode());
-    assertTrue(userAccountRepository.findByUsername("newuser").isPresent());
-  }
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertTrue(userAccountRepository.findByUsername("newuser").isPresent());
+    }
 
-  @Test
-  public void testLoginSuccess() {
-    UserAccount user = new UserAccount("loginuser", "password123");
-    userAccountRepository.save(user);
+    @Test
+    public void testLoginSuccess() {
+        UserAccount user = new UserAccount("loginuser", "password123");
+        userAccountRepository.save(user);
 
-    LoginRequest loginRequest = new LoginRequest();
-    loginRequest.setUsername("loginuser");
-    loginRequest.setPassword("password123");
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("loginuser");
+        loginRequest.setPassword("password123");
 
-    ResponseEntity<LoginResponse> response = restTemplate.postForEntity(
-      createURLWithPort("/login"),
-      loginRequest,
-      LoginResponse.class
-    );
+        ResponseEntity<LoginResponse> response = restTemplate.postForEntity(
+            createURLWithPort("/users/login"),
+            loginRequest,
+            LoginResponse.class
+        );
 
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertNotNull(response.getBody());
-    assertNotNull(response.getBody().getUserId());
-  }
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertNotNull(response.getBody().getUserId());
+    }
 
-  @Test
-  public void testDeleteUser() {
-    UserAccount user = new UserAccount("deleteuser", "password123");
-    userAccountRepository.save(user);
+    @Test
+    public void testDeleteUser() {
+        UserAccount user = new UserAccount("deleteuser", "password123");
+        userAccountRepository.save(user);
 
-    restTemplate.delete(createURLWithPort("/users/" + user.getId()));
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("User-Id", user.getId().toString());
+        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
 
-    assertFalse(userAccountRepository.findById(user.getId()).isPresent());
-  }
+        ResponseEntity<Void> response = restTemplate.exchange(
+            createURLWithPort("/users/" + user.getId()),
+            HttpMethod.DELETE,
+            requestEntity,
+            Void.class
+        );
+        restTemplate.delete(createURLWithPort("/users/" + user.getId()));
 
-  @Test
-  public void testCreateDuplicateUsername() {
-    UserAccount user = new UserAccount("duplicate", "password123");
-    userAccountRepository.save(user);
+        assertFalse(userAccountRepository.findById(user.getId()).isPresent());
+    }
 
-    UserAccountRequest request = new UserAccountRequest();
-    request.setUsername("duplicate");
-    request.setPassword("differentpassword");
+    @Test
+    public void testCreateDuplicateUsername() {
+        UserAccount user = new UserAccount("duplicate", "password123");
+        userAccountRepository.save(user);
 
-    ResponseEntity<?> response = restTemplate.postForEntity(
-      createURLWithPort("/users"),
-      request,
-      Void.class
-    );
+        UserAccountRequest request = new UserAccountRequest();
+        request.setUsername("duplicate");
+        request.setPassword("differentpassword");
 
-    assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
-  }
+        ResponseEntity<?> response = restTemplate.postForEntity(
+            createURLWithPort("/users"),
+            request,
+            Void.class
+        );
+
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+    }
 }

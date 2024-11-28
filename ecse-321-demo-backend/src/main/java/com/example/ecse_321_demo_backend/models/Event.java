@@ -25,38 +25,45 @@ import lombok.Setter;
 @Setter
 public abstract class Event {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
-  @ManyToOne
-  private UserAccount created_by;
+    @ManyToOne
+    private UserAccount created_by;
 
-  private Timestamp created_at;
+    private Timestamp created_at;
 
-  private String description;
+    private String description;
 
-  private Timestamp start_time;
+    private Timestamp start_time;
 
-  private Timestamp end_time;
+    private Timestamp end_time;
 
-  public Event() {}
+    private Integer participantsCount;
 
-  public Event(
-    UserAccount creator,
-    String description,
-    Timestamp start_time,
-    Timestamp end_time
-  ) {
-    this.created_by = creator;
-    this.created_at = Timestamp.from(Instant.now());
-    this.description = description;
-    this.start_time = start_time;
-    this.end_time = end_time;
-  }
+    private Integer capacity;
 
-  @Transient
-  public String getEventType() {
-    return this.getClass().getAnnotation(DiscriminatorValue.class).value();
-  }
+    public Event() {}
+
+    public Event(
+        UserAccount creator,
+        String description,
+        Timestamp start_time,
+        Timestamp end_time,
+        Integer capacity
+    ) {
+        this.created_by = creator;
+        this.created_at = Timestamp.from(Instant.now());
+        this.description = description;
+        this.start_time = start_time;
+        this.end_time = end_time;
+        this.participantsCount = 0;
+        this.capacity = capacity;
+    }
+
+    @Transient
+    public String getEventType() {
+        return this.getClass().getAnnotation(DiscriminatorValue.class).value();
+    }
 }

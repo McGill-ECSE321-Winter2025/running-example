@@ -1,5 +1,6 @@
 package com.example.ecse_321_demo_backend.controller;
 
+import com.example.ecse_321_demo_backend.middleware.RequireUser;
 import com.example.ecse_321_demo_backend.models.UserAccount;
 import com.example.ecse_321_demo_backend.requests.LoginRequest;
 import com.example.ecse_321_demo_backend.requests.UserAccountRequest;
@@ -13,15 +14,17 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api/users")
 public class UserAccountRestController {
 
     @Autowired
     private UserAccountService userAccountService;
 
-    @PostMapping("/users")
+    @PostMapping
     public ResponseEntity<?> createUserAccount(
         @RequestBody UserAccountRequest request
     ) {
@@ -32,7 +35,8 @@ public class UserAccountRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping("/{userId}")
+    @RequireUser
     public ResponseEntity<?> deleteUserAccount(@PathVariable UUID userId) {
         userAccountService.deleteUserAccount(userId);
         return ResponseEntity.ok().build();
