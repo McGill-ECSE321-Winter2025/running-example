@@ -1,0 +1,86 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > EventRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.ecse_321_demo_backend.dao</a>
+</div>
+
+<h1>Coverage Summary for Class: EventRepository (com.example.ecse_321_demo_backend.dao)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">EventRepository$MockitoMock$eu4zCpwG</td>
+  </tr>
+  <tr>
+    <td class="name">EventRepository$MockitoMock$eu4zCpwG$auxiliary$t68LPHK8</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.ecse_321_demo_backend.dao;
+&nbsp;
+&nbsp;import com.example.ecse_321_demo_backend.models.Event;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.UUID;
+&nbsp;import org.springframework.data.repository.CrudRepository;
+&nbsp;import org.springframework.lang.NonNull;
+&nbsp;
+&nbsp;public interface EventRepository extends CrudRepository&lt;Event, UUID&gt; {
+&nbsp;  @NonNull
+&nbsp;  Optional&lt;Event&gt; findById(@NonNull UUID id);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-11-29 17:09</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,186 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Event</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.ecse_321_demo_backend.models</a>
+</div>
+
+<h1>Coverage Summary for Class: Event (com.example.ecse_321_demo_backend.models)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Event</td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (2/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90.9%
+  </span>
+  <span class="absValue">
+    (10/11)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Event$HibernateProxy$0b5zdznm</td>
+  </tr>
+  <tr>
+    <td class="name">Event$HibernateProxy$21MWRPnb</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (2/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90.9%
+  </span>
+  <span class="absValue">
+    (10/11)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.ecse_321_demo_backend.models;
+&nbsp;
+&nbsp;import jakarta.persistence.DiscriminatorColumn;
+&nbsp;import jakarta.persistence.DiscriminatorValue;
+&nbsp;import jakarta.persistence.Entity;
+&nbsp;import jakarta.persistence.GeneratedValue;
+&nbsp;import jakarta.persistence.GenerationType;
+&nbsp;import jakarta.persistence.Id;
+&nbsp;import jakarta.persistence.Inheritance;
+&nbsp;import jakarta.persistence.InheritanceType;
+&nbsp;import jakarta.persistence.ManyToOne;
+&nbsp;import jakarta.persistence.Table;
+&nbsp;import jakarta.persistence.Transient;
+&nbsp;import java.sql.Timestamp;
+&nbsp;import java.time.Instant;
+&nbsp;import java.util.UUID;
+&nbsp;import lombok.Getter;
+&nbsp;import lombok.Setter;
+&nbsp;
+&nbsp;@Entity
+&nbsp;@Table(name = &quot;events&quot;)
+&nbsp;@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+&nbsp;@DiscriminatorColumn(name = &quot;EVENT_TYPE&quot;)
+&nbsp;@Getter
+&nbsp;@Setter
+&nbsp;public abstract class Event {
+&nbsp;
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.UUID)
+&nbsp;    private UUID id;
+&nbsp;
+&nbsp;    @ManyToOne
+&nbsp;    private UserAccount created_by;
+&nbsp;
+&nbsp;    private Timestamp created_at;
+&nbsp;
+&nbsp;    private String description;
+&nbsp;
+&nbsp;    private Timestamp start_time;
+&nbsp;
+&nbsp;    private Timestamp end_time;
+&nbsp;
+&nbsp;    private Integer participantsCount;
+&nbsp;
+&nbsp;    private Integer capacity;
+&nbsp;
+<b class="fc">&nbsp;    public Event() {}</b>
+&nbsp;
+&nbsp;    public Event(
+&nbsp;        UserAccount creator,
+&nbsp;        String description,
+&nbsp;        Timestamp start_time,
+&nbsp;        Timestamp end_time,
+&nbsp;        Integer capacity
+<b class="fc">&nbsp;    ) {</b>
+<b class="fc">&nbsp;        this.created_by = creator;</b>
+<b class="fc">&nbsp;        this.created_at = Timestamp.from(Instant.now());</b>
+<b class="fc">&nbsp;        this.description = description;</b>
+<b class="fc">&nbsp;        this.start_time = start_time;</b>
+<b class="fc">&nbsp;        this.end_time = end_time;</b>
+<b class="fc">&nbsp;        this.participantsCount = 0;</b>
+<b class="fc">&nbsp;        this.capacity = capacity;</b>
+<b class="fc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    @Transient
+&nbsp;    public String getEventType() {
+<b class="nc">&nbsp;        return this.getClass().getAnnotation(DiscriminatorValue.class).value();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-11-29 17:09</div>
+</div>
+</body>
+</html>

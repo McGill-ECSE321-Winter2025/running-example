@@ -1,0 +1,176 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > UserAuthInterceptor</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.ecse_321_demo_backend.middleware</a>
+</div>
+
+<h1>Coverage Summary for Class: UserAuthInterceptor (com.example.ecse_321_demo_backend.middleware)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserAuthInterceptor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (21/24)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.ecse_321_demo_backend.middleware;
+&nbsp;
+&nbsp;import com.example.ecse_321_demo_backend.dao.UserAccountRepository;
+&nbsp;import com.example.ecse_321_demo_backend.exceptions.UnauthedException;
+&nbsp;import com.example.ecse_321_demo_backend.models.UserAccount;
+&nbsp;import jakarta.servlet.http.HttpServletRequest;
+&nbsp;import jakarta.servlet.http.HttpServletResponse;
+&nbsp;import java.util.UUID;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;import org.springframework.web.method.HandlerMethod;
+&nbsp;import org.springframework.web.servlet.HandlerInterceptor;
+&nbsp;
+&nbsp;@Component
+<b class="fc">&nbsp;public class UserAuthInterceptor implements HandlerInterceptor {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private UserAccountRepository userAccountRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private UserContext userContext;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public boolean preHandle(
+&nbsp;        HttpServletRequest request,
+&nbsp;        HttpServletResponse response,
+&nbsp;        Object handler
+&nbsp;    ) throws Exception {
+<b class="fc">&nbsp;        if (!(handler instanceof HandlerMethod)) {</b>
+<b class="nc">&nbsp;            return true;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        HandlerMethod handlerMethod = (HandlerMethod) handler;</b>
+<b class="fc">&nbsp;        RequireUser requireUser = handlerMethod.getMethodAnnotation(</b>
+&nbsp;            RequireUser.class
+&nbsp;        );
+<b class="fc">&nbsp;        if (requireUser == null) {</b>
+<b class="fc">&nbsp;            requireUser = handlerMethod</b>
+<b class="fc">&nbsp;                .getBeanType()</b>
+<b class="fc">&nbsp;                .getAnnotation(RequireUser.class);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if (requireUser != null) {</b>
+<b class="fc">&nbsp;            String userIdHeader = request.getHeader(&quot;User-Id&quot;);</b>
+<b class="fc">&nbsp;            if (userIdHeader == null) {</b>
+<b class="fc">&nbsp;                throw new UnauthedException(&quot;No User-Id header provided&quot;);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            try {
+<b class="fc">&nbsp;                UUID userId = UUID.fromString(userIdHeader);</b>
+<b class="fc">&nbsp;                UserAccount user = userAccountRepository</b>
+<b class="fc">&nbsp;                    .findById(userId)</b>
+<b class="fc">&nbsp;                    .orElseThrow(() -&gt; new UnauthedException(&quot;User not found&quot;));</b>
+<b class="fc">&nbsp;                userContext.setCurrentUser(user);</b>
+<b class="nc">&nbsp;            } catch (IllegalArgumentException e) {</b>
+<b class="nc">&nbsp;                throw new UnauthedException(&quot;Invalid User-Id format&quot;);</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void afterCompletion(
+&nbsp;        HttpServletRequest request,
+&nbsp;        HttpServletResponse response,
+&nbsp;        Object handler,
+&nbsp;        Exception ex
+&nbsp;    ) throws Exception {
+<b class="fc">&nbsp;        userContext.clear();</b>
+<b class="fc">&nbsp;    }</b>
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-11-29 17:09</div>
+</div>
+</body>
+</html>

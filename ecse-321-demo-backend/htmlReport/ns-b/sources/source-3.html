@@ -1,0 +1,91 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > RegistrationRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.ecse_321_demo_backend.dao</a>
+</div>
+
+<h1>Coverage Summary for Class: RegistrationRepository (com.example.ecse_321_demo_backend.dao)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">RegistrationRepository$MockitoMock$rBHwOiGN</td>
+  </tr>
+  <tr>
+    <td class="name">RegistrationRepository$MockitoMock$rBHwOiGN$auxiliary$59COhcGs</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.ecse_321_demo_backend.dao;
+&nbsp;
+&nbsp;import com.example.ecse_321_demo_backend.models.Event;
+&nbsp;import com.example.ecse_321_demo_backend.models.Registration;
+&nbsp;import com.example.ecse_321_demo_backend.models.UserAccount;
+&nbsp;import com.example.ecse_321_demo_backend.models.keys.RegistrationId;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;import org.springframework.data.repository.CrudRepository;
+&nbsp;
+&nbsp;public interface RegistrationRepository
+&nbsp;    extends CrudRepository&lt;Registration, RegistrationId&gt; {
+&nbsp;    Optional&lt;Registration&gt; findById(RegistrationId id);
+&nbsp;    List&lt;Registration&gt; findByUser(UserAccount user);
+&nbsp;    List&lt;Registration&gt; findByEvent(Event event);
+&nbsp;    Optional&lt;Registration&gt; findByUserAndEvent(UserAccount user, Event event);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-11-29 17:09</div>
+</div>
+</body>
+</html>
