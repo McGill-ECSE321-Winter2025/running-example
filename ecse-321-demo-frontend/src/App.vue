@@ -24,7 +24,6 @@ const handleLoginSuccess = () => {
   window.location.reload()
 }
 
-// Handle the custom event
 const handleShowLoginModal = () => {
   showLoginModal()
 }
