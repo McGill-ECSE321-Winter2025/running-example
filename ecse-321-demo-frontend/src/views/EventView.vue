@@ -2,17 +2,14 @@
   <div class="events-container">
     <h1 class="text-3xl font-bold mb-4">Events</h1>
 
-    <!-- Loading state -->
     <div v-if="loading" class="flex justify-center items-center p-4">
       <ProgressSpinner />
     </div>
 
-    <!-- Error state -->
     <div v-else-if="error" class="p-4 bg-red-100 text-red-700 rounded">
       {{ error }}
     </div>
 
-    <!-- Events list -->
     <div v-else class="grid gap-4">
       <DataTable :value="events" :paginator="true" :rows="10" responsive-layout="scroll">
         <Column field="description" header="Description" />

@@ -1,4 +1,4 @@
--- This is a script to create a bunch of dummy data (Curtoesy of claude sonnet)
+-- This is some squeal to create a bunch of dummy data (Thanks Claude!!!)
 
 -- Insert specific user accounts
 INSERT INTO user_account (id, username, password, created_at)
