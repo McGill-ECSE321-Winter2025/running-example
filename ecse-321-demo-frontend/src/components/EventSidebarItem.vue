@@ -3,18 +3,12 @@
     :visible="visible"
     position="right"
     :modal="true"
-    @hide="$emit('update:visible', false)"
+    :closeable="true"
+    @update:visible="$emit('update:visible', false)"
     class="w-full md:w-30rem"
   >
     <template #header>
-      <div class="flex justify-content-between align-items-center">
-        <h3>Event Registrations</h3>
-        <Button
-          icon="pi pi-times"
-          class="p-button-rounded p-button-text"
-          @click="$emit('update:visible', false)"
-        />
-      </div>
+      <h3>Event Registrations</h3>
     </template>
 
     <div v-if="loading" class="flex justify-content-center">
@@ -38,7 +32,6 @@ import { ref, watch } from 'vue'
 import Sidebar from 'primevue/sidebar'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
-import Button from 'primevue/button'
 import ProgressSpinner from 'primevue/progressspinner'
 import { eventService } from '@/services/eventService'
 

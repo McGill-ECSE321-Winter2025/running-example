@@ -10,6 +10,7 @@ export const eventService = {
       throw error
     }
   },
+
   async getEventsByCreator(userId) {
     try {
       const response = await api.get(`/events?createdBy=${userId}`)
