@@ -17,7 +17,9 @@ public class RegistrationResponse {
     ) {
         RegistrationResponse response = new RegistrationResponse();
         response.setUserId(registration.getUser().getId());
-        response.setUsername(registration.getUser().getUsername());
+        response.setUsername(
+            registration.getEvent().getCreated_by().getUsername()
+        );
         response.setEventId(registration.getEvent().getId());
         response.setEventDescription(registration.getEvent().getDescription());
         return response;
