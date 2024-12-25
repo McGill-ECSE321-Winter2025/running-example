@@ -6,5 +6,6 @@ import lombok.Data;
 @Data
 public class LoginResponse {
 
-  private final UUID userId;
+    private final UUID userId;
+    private final String username;
 }

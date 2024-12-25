@@ -50,6 +50,8 @@ public class UserAccountRestController {
             request.getUsername(),
             request.getPassword()
         );
-        return ResponseEntity.ok(new LoginResponse(user.getId()));
+        return ResponseEntity.ok(
+            new LoginResponse(user.getId(), user.getUsername())
+        );
     }
 }

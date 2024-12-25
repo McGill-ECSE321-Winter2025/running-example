@@ -92,6 +92,7 @@ const handleSubmit = async () => {
     } else {
       const response = await api.post('/users/login', credentials.value)
       localStorage.setItem('userId', response.data.userId)
+      localStorage.setItem('username', response.data.username)
       emit('update:visible', false)
       emit('loginSuccess')
       resetForm()
