@@ -1,55 +1,43 @@
 <template>
-  <div class="my-events-container">
-    <TitlebarItem title="My Events" :showNewButton="true" @search="handleSearch" @new="handleNew">
-      <template #filterContent> </template>
-    </TitlebarItem>
-
-    <div v-if="loading" class="flex justify-content-center">
-      <ProgressSpinner />
-    </div>
-
-    <div v-else-if="error" class="p-4 bg-red-100 text-red-700 rounded">
-      {{ error }}
-    </div>
-
-    <div v-else>
-      <Card>
-        <template #content>
-          <DataTable :value="events" :paginator="true" :rows="10" responsiveLayout="scroll">
-            <Column field="description" header="Description" />
-            <Column field="eventType" header="Type" />
-            <Column header="Start Time">
-              <template #body="slotProps">
-                {{ formatDate(slotProps.data.startTime) }}
-              </template>
-            </Column>
-            <Column header="End Time">
-              <template #body="slotProps">
-                {{ formatDate(slotProps.data.endTime) }}
-              </template>
-            </Column>
-            <Column field="capacity" header="Capacity" />
-            <Column>
-              <template #body="slotProps">
-                <div class="flex gap-2">
-                  <Button
-                    icon="pi pi-pencil"
-                    class="p-button-rounded p-button-text"
-                    @click="openUpdateDialog(slotProps.data)"
-                  />
-                  <Button
-                    icon="pi pi-users"
-                    class="p-button-rounded p-button-text"
-                    @click="openRegistrationsSidebar(slotProps.data)"
-                  />
-                </div>
-              </template>
-            </Column>
-          </DataTable>
-        </template>
-      </Card>
-    </div>
-  </div>
+  <DataTableCard
+    title="My Events"
+    :data="events"
+    :loading="loading"
+    :error="error"
+    :showNewButton="true"
+    @search="handleSearch"
+    @new="handleNew"
+  >
+    <Column field="description" header="Description" />
+    <Column field="eventType" header="Type" />
+    <Column header="Start Time">
+      <template #body="slotProps">
+        {{ formatDate(slotProps.data.startTime) }}
+      </template>
+    </Column>
+    <Column header="End Time">
+      <template #body="slotProps">
+        {{ formatDate(slotProps.data.endTime) }}
+      </template>
+    </Column>
+    <Column field="capacity" header="Capacity" />
+    <Column>
+      <template #body="slotProps">
+        <div class="flex gap-2">
+          <Button
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-text"
+            @click="openUpdateDialog(slotProps.data)"
+          />
+          <Button
+            icon="pi pi-users"
+            class="p-button-rounded p-button-text"
+            @click="openRegistrationsSidebar(slotProps.data)"
+          />
+        </div>
+      </template>
+    </Column>
+  </DataTableCard>
 
   <UpdateEventDialog
     v-model:visible="updateDialogVisible"
@@ -62,15 +50,12 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Button from 'primevue/button'
-import ProgressSpinner from 'primevue/progressspinner'
 import { eventService } from '@/services/eventService'
 import UpdateEventDialog from '@/components/UpdateEventItem.vue'
 import EventSidebar from '@/components/EventSidebarItem.vue'
-import TitlebarItem from '@/components/TitlebarItem.vue'
-import Card from 'primevue/card'
+import DataTableCard from '@/components/DataTableCard.vue'
 
 const events = ref([])
 const loading = ref(true)
@@ -117,11 +102,3 @@ onMounted(() => {
   fetchEvents()
 })
 </script>
-
-<style scoped>
-.my-events-container {
-  padding: 1rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-</style>

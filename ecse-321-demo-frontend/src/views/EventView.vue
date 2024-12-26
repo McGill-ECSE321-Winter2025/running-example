@@ -1,61 +1,34 @@
 <template>
-  <div class="event-container flex flex-col h-full pt-4">
-    <div class="titlebar flex-shrink-0">
-      <TitlebarItem title="Events" :showNewButton="true" @search="handleSearch" @new="handleNew">
-        <template #filterContent> </template>
-      </TitlebarItem>
-    </div>
-    <div class="content flex-grow">
-      <div v-if="loading" class="flex justify-center items-center p-4">
-        <ProgressSpinner />
-      </div>
-
-      <div v-else-if="error" class="p-4 bg-red-100 text-red-700 rounded">
-        {{ error }}
-      </div>
-
-      <div v-else class="h-full">
-        <Card class="h-full">
-          <template #content>
-            <div class="datatable-container h-full">
-              <DataTable
-                :value="events"
-                :paginator="true"
-                :rows="25"
-                scrollable
-                scrollHeight="flex"
-                class="h-full"
-              >
-                <Column field="description" header="Description" />
-                <Column field="eventType" header="Type" />
-                <Column header="Start Time">
-                  <template #body="slotProps">
-                    {{ formatDate(slotProps.data.startTime) }}
-                  </template>
-                </Column>
-                <Column header="End Time">
-                  <template #body="slotProps">
-                    {{ formatDate(slotProps.data.endTime) }}
-                  </template>
-                </Column>
-                <Column field="remainingSeats" header="Seats" />
-              </DataTable>
-            </div>
-          </template>
-        </Card>
-      </div>
-    </div>
-  </div>
+  <DataTableCard
+    title="Events"
+    :data="events"
+    :loading="loading"
+    :error="error"
+    :showNewButton="true"
+    @search="handleSearch"
+    @new="handleNew"
+  >
+    <Column field="description" header="Description" />
+    <Column field="eventType" header="Type" />
+    <Column header="Start Time">
+      <template #body="slotProps">
+        {{ formatDate(slotProps.data.startTime) }}
+      </template>
+    </Column>
+    <Column header="End Time">
+      <template #body="slotProps">
+        {{ formatDate(slotProps.data.endTime) }}
+      </template>
+    </Column>
+    <Column field="remainingSeats" header="Seats" />
+  </DataTableCard>
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue'
 import { eventService } from '@/services/eventService'
-import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
-import ProgressSpinner from 'primevue/progressspinner'
-import Card from 'primevue/card'
-import TitlebarItem from '@/components/TitlebarItem.vue'
+import DataTableCard from '@/components/DataTableCard.vue'
 
 const events = ref([])
 const loading = ref(true)
@@ -93,54 +66,3 @@ onMounted(() => {
   fetchEvents()
 })
 </script>
-
-<style scoped>
-.event-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  gap: 1rem;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  height: 100%;
-}
-
-:deep(.p-card) {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-:deep(.p-card-body) {
-  height: 100%;
-}
-
-:deep(.p-card-content) {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 0;
-}
-
-.datatable-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.datatable-container .p-datatable {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.p-datatable-scrollable-body {
-  flex: 1;
-  overflow-y: auto;
-}
-</style>

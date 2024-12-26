@@ -1,14 +1,11 @@
 <template>
   <div class="app-container flex flex-col min-h-screen">
-    <!-- Menubar at the top -->
     <MenubarItem class="flex-shrink-0" />
 
-    <!-- Main Content Area -->
     <div class="main-content flex-grow overflow-hidden">
       <router-view />
     </div>
 
-    <!-- Login Modal -->
     <LoginModal v-model:visible="loginModalVisible" @loginSuccess="handleLoginSuccess" />
   </div>
 </template>
@@ -43,6 +40,8 @@ provide('isLoggedIn', isLoggedIn)
   display: flex;
   flex-direction: column;
   height: 100vh;
+  width: 100vw;
+  max-width: 100%;
 }
 
 .main-content {
