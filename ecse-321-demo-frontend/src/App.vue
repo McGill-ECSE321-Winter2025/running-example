@@ -1,20 +1,25 @@
 <template>
-  <div class="app-container flex">
-    <Sidebar />
-    <div class="main-content flex-grow-1 p-4">
+  <div class="app-container flex flex-col min-h-screen">
+    <!-- Menubar at the top -->
+    <MenubarItem class="flex-shrink-0" />
+
+    <!-- Main Content Area -->
+    <div class="main-content flex-grow overflow-hidden">
       <router-view />
     </div>
-  </div>
 
-  <LoginModal v-model:visible="loginModalVisible" @loginSuccess="handleLoginSuccess" />
+    <!-- Login Modal -->
+    <LoginModal v-model:visible="loginModalVisible" @loginSuccess="handleLoginSuccess" />
+  </div>
 </template>
 
 <script setup>
 import { ref, provide } from 'vue'
-import Sidebar from './components/SidebarItem.vue'
+import MenubarItem from './components/MenubarItem.vue'
 import LoginModal from './components/LoginModalItem.vue'
 
 const loginModalVisible = ref(false)
+
 const username = ref(localStorage.getItem('username') || 'Guest')
 const isLoggedIn = ref(!!localStorage.getItem('userId'))
 
@@ -25,7 +30,6 @@ const showLoginModal = () => {
 const handleLoginSuccess = () => {
   username.value = localStorage.getItem('username') || 'Guest'
   isLoggedIn.value = !!localStorage.getItem('userId')
-
   loginModalVisible.value = false
 }
 
@@ -37,17 +41,12 @@ provide('isLoggedIn', isLoggedIn)
 <style>
 .app-container {
   display: flex;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-}
-.sidebar-fixed {
-  flex: 0 0 240px;
+  flex-direction: column;
   height: 100vh;
 }
+
 .main-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 2rem;
+  flex-grow: 1;
+  overflow: hidden;
 }
 </style>

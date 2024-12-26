@@ -1,6 +1,8 @@
 <template>
   <div class="registrations-container">
-    <h1 class="text-3xl font-bold mb-4">My Registrations</h1>
+    <TitlebarItem title="My Registrations" @search="handleSearch" @new="handleNew">
+      <template #filterContent> </template>
+    </TitlebarItem>
 
     <div v-if="loading" class="flex justify-content-center">
       <ProgressSpinner />
@@ -11,12 +13,18 @@
     </div>
 
     <div v-else>
-      <DataTable :value="registrations" :paginator="true" :rows="10" responsiveLayout="scroll">
-        <Column field="username" header="Username"></Column>
-        <Column field="eventDescription" header="Event Description"></Column>
-      </DataTable>
+      <Card>
+        <template #content>
+          <DataTable :value="registrations" :paginator="true" :rows="10" responsiveLayout="scroll">
+            <Column field="username" header="Creator"></Column>
+            <Column field="eventDescription" header="Event Title"></Column>
+          </DataTable>
 
-      <div v-if="registrations.length === 0" class="text-center p-4">No registrations found</div>
+          <div v-if="registrations.length === 0" class="text-center p-4">
+            No registrations found
+          </div>
+        </template>
+      </Card>
     </div>
   </div>
 </template>
@@ -26,7 +34,9 @@ import { ref, onMounted } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import ProgressSpinner from 'primevue/progressspinner'
+import Card from 'primevue/card'
 import api from '@/services/api'
+import TitlebarItem from '@/components/TitlebarItem.vue'
 
 const registrations = ref([])
 const loading = ref(true)

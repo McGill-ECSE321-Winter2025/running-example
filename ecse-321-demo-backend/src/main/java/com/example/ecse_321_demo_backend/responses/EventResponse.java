@@ -15,7 +15,7 @@ public class EventResponse {
     private String description;
     private Timestamp startTime;
     private Timestamp endTime;
-    private Integer capacity;
+    private Integer remainingSeats;
     private String locationOrLink;
     private UUID createdBy;
     private Timestamp createdAt;
@@ -27,7 +27,9 @@ public class EventResponse {
         response.setDescription(event.getDescription());
         response.setStartTime(event.getStart_time());
         response.setEndTime(event.getEnd_time());
-        response.setCapacity(event.getCapacity());
+        response.setRemainingSeats(
+            event.getCapacity() - event.getParticipantsCount()
+        );
         if (event instanceof InPersonEvent) {
             response.setLocationOrLink(((InPersonEvent) event).getLocation());
         } else if (event instanceof OnlineEvent) {
