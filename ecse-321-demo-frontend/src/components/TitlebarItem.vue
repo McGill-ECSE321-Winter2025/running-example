@@ -9,7 +9,7 @@
         <InputIcon>
           <i class="pi pi-search" />
         </InputIcon>
-        <InputText placeholder="(Doesn't work xd)" />
+        <InputText disabled placeholder="(disabled...)" />
       </IconField>
     </template>
 
