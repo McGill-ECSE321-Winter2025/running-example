@@ -10,39 +10,17 @@
       </div>
 
       <div v-else class="table-container">
-        <DataTable
-          :value="data"
-          :paginator="true"
-          :rows="rows"
-          :resizableColumns="true"
-          columnResizeMode="fit"
-          scrollable
-          scrollHeight="flex"
-        >
-          <slot></slot>
-        </DataTable>
+        <slot name="datatable"></slot>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import DataTable from 'primevue/datatable'
+import { ref } from 'vue'
 import ProgressSpinner from 'primevue/progressspinner'
 
 defineProps({
-  title: {
-    type: String,
-    required: true,
-  },
-  showNewButton: {
-    type: Boolean,
-    default: false,
-  },
-  data: {
-    type: Array,
-    required: true,
-  },
   loading: {
     type: Boolean,
     required: true,
@@ -50,10 +28,6 @@ defineProps({
   error: {
     type: String,
     default: null,
-  },
-  rows: {
-    type: Number,
-    default: 25,
   },
 })
 </script>
@@ -82,29 +56,5 @@ defineProps({
 
 .table-container {
   height: 100%;
-}
-
-:deep(.p-datatable) {
-  height: 100%;
-}
-
-:deep(.p-datatable-wrapper) {
-  height: 100%;
-}
-
-:deep(.p-datatable-table) {
-  min-width: 100%;
-}
-
-:deep(.p-column-header-content) {
-  display: flex;
-  align-items: center;
-}
-
-:deep(.p-paginator) {
-  position: sticky;
-  bottom: 0;
-  background: var(--surface-card);
-  z-index: 1;
 }
 </style>

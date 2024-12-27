@@ -17,7 +17,7 @@ public class EventResponse {
     private Timestamp endTime;
     private Integer remainingSeats;
     private String locationOrLink;
-    private UUID createdBy;
+    private String createdBy;
     private Timestamp createdAt;
 
     public static EventResponse fromEvent(Event event) {
@@ -35,7 +35,7 @@ public class EventResponse {
         } else if (event instanceof OnlineEvent) {
             response.setLocationOrLink(((OnlineEvent) event).getInviteLink());
         }
-        response.setCreatedBy(event.getCreated_by().getId());
+        response.setCreatedBy(event.getCreated_by().getUsername());
         response.setCreatedAt(event.getCreated_at());
         return response;
     }

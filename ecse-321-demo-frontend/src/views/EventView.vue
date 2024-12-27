@@ -1,5 +1,8 @@
 <template>
   <div class="event-view-container">
+    <Toast />
+    <ConfirmPopup></ConfirmPopup>
+
     <Titlebar title="Events" :showNewButton="true">
       <template #filterButton>
         <EventFilterPopover />
@@ -9,44 +12,85 @@
       </template>
     </Titlebar>
 
-    <DataTableCard
-      title="Events"
-      :data="events"
-      :loading="loading"
-      :error="error"
-      :showNewButton="true"
-      @search="handleSearch"
-      @new="handleNew"
-    >
-      <Column field="description" header="Description" />
-      <Column field="eventType" header="Type" />
-      <Column header="Start Time">
-        <template #body="slotProps">
-          {{ formatDate(slotProps.data.startTime) }}
-        </template>
-      </Column>
-      <Column header="End Time">
-        <template #body="slotProps">
-          {{ formatDate(slotProps.data.endTime) }}
-        </template>
-      </Column>
-      <Column field="remainingSeats" header="Seats" />
+    <DataTableCard :loading="loading" :error="error">
+      <template #datatable>
+        <DataTable
+          v-model:expandedRows="expandedRows"
+          :value="events"
+          :paginator="true"
+          :rows="25"
+          :resizableColumns="true"
+          columnResizeMode="fit"
+          scrollable
+          scrollHeight="flex"
+          dataKey="id"
+          @rowExpand="onRowExpand"
+          @rowCollapse="onRowCollapse"
+        >
+          <template #header>
+            <div class="flex justify-between items-center w-full">
+              <div>Total Events: {{ events.length }}</div>
+              <div class="flex flex-wrap justify-end gap-2">
+                <Button text icon="pi pi-plus" label="Expand All" @click="expandAll" />
+                <Button text icon="pi pi-minus" label="Collapse All" @click="collapseAll" />
+              </div>
+            </div>
+          </template>
+
+          <Column expander style="width: 5rem" />
+          <Column field="description" header="Description" />
+          <Column field="eventType" header="Type" />
+          <Column header="Start Time">
+            <template #body="slotProps">
+              {{ formatDate(slotProps.data.startTime) }}
+            </template>
+          </Column>
+          <Column header="End Time">
+            <template #body="slotProps">
+              {{ formatDate(slotProps.data.endTime) }}
+            </template>
+          </Column>
+          <Column field="remainingSeats" header="Seats" />
+
+          <template #expansion="slotProps">
+            <div class="p-4">
+              <h5>Details for {{ slotProps.data.description }}</h5>
+              <p><strong>Location/Link:</strong> {{ slotProps.data.locationOrLink }}</p>
+              <p><strong>Created By:</strong> {{ slotProps.data.createdBy }}</p>
+              <Button
+                label="Register"
+                icon="pi pi-check"
+                @click="registerForEvent(slotProps.data)"
+              />
+            </div>
+          </template>
+        </DataTable>
+      </template>
     </DataTableCard>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { eventService } from '@/services/eventService'
+import { useToast } from 'primevue/usetoast'
+import { useConfirm } from 'primevue/useconfirm'
+import Button from 'primevue/button'
 import Column from 'primevue/column'
+import DataTable from 'primevue/datatable'
 import Titlebar from '@/components/TitleBar.vue'
 import DataTableCard from '@/components/DataTableCard.vue'
 import NewEventFormPopover from '@/components/NewEventFormPopover.vue'
 import EventFilterPopover from '@/components/EventFilterPopover.vue'
+import Toast from 'primevue/toast'
+import ConfirmPopup from 'primevue/confirmpopup'
 
-const events = ref([])
+const events = ref()
 const loading = ref(true)
 const error = ref(null)
+const expandedRows = ref({})
+const toast = useToast()
+const confirm = useConfirm()
 
 const formatDate = (dateString) => {
   if (!dateString) return ''
@@ -74,6 +118,68 @@ const fetchEvents = async () => {
   } finally {
     loading.value = false
   }
+}
+
+const onRowExpand = (event) => {
+  toast.add({
+    severity: 'info',
+    summary: 'Event Expanded',
+    detail: event.data.description,
+    life: 3000,
+  })
+}
+
+const onRowCollapse = (event) => {
+  toast.add({
+    severity: 'info',
+    summary: 'Event Collapsed',
+    detail: event.data.description,
+    life: 3000,
+  })
+}
+
+const expandAll = () => {
+  expandedRows.value = events.value.reduce((acc, p) => {
+    acc[p.id] = true
+    return acc
+  }, {})
+}
+
+const collapseAll = () => {
+  expandedRows.value = null
+}
+
+const registerForEvent = (event) => {
+  const isLoggedIn = !!localStorage.getItem('userId')
+
+  if (!isLoggedIn) {
+    window.dispatchEvent(new CustomEvent('show-login-modal'))
+    return
+  }
+
+  confirm.require({
+    target: event.currentTarget,
+    message: `Are you sure you want to register for event: ${event.description}?`,
+    icon: 'pi pi-exclamation-triangle',
+    accept: async () => {
+      try {
+        await eventService.registerForEvent(event.id)
+        toast.add({
+          severity: 'success',
+          summary: 'Registered',
+          detail: `You have successfully registered for the event: ${event.description}`,
+          life: 3000,
+        })
+      } catch {
+        toast.add({
+          severity: 'error',
+          summary: 'Registration Failed',
+          detail: 'Failed to register for the event. Please try again later.',
+          life: 3000,
+        })
+      }
+    },
+  })
 }
 
 onMounted(() => {
