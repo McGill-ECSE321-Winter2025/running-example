@@ -1,43 +1,51 @@
 <template>
-  <DataTableCard
-    title="My Events"
-    :data="events"
-    :loading="loading"
-    :error="error"
-    :showNewButton="true"
-    @search="handleSearch"
-    @new="handleNew"
-  >
-    <Column field="description" header="Description" />
-    <Column field="eventType" header="Type" />
-    <Column header="Start Time">
-      <template #body="slotProps">
-        {{ formatDate(slotProps.data.startTime) }}
+  <div class="my-event-view-container">
+    <Titlebar title="My Events" :showNewButton="true">
+      <template #newButton>
+        <NewEventFormPopover />
       </template>
-    </Column>
-    <Column header="End Time">
-      <template #body="slotProps">
-        {{ formatDate(slotProps.data.endTime) }}
-      </template>
-    </Column>
-    <Column field="capacity" header="Capacity" />
-    <Column>
-      <template #body="slotProps">
-        <div class="flex gap-2">
-          <Button
-            icon="pi pi-pencil"
-            class="p-button-rounded p-button-text"
-            @click="openUpdateDialog(slotProps.data)"
-          />
-          <Button
-            icon="pi pi-users"
-            class="p-button-rounded p-button-text"
-            @click="openRegistrationsSidebar(slotProps.data)"
-          />
-        </div>
-      </template>
-    </Column>
-  </DataTableCard>
+    </Titlebar>
+
+    <DataTableCard
+      title="My Events"
+      :data="events"
+      :loading="loading"
+      :error="error"
+      :showNewButton="true"
+      @search="handleSearch"
+      @new="handleNew"
+    >
+      <Column field="description" header="Description" />
+      <Column field="eventType" header="Type" />
+      <Column header="Start Time">
+        <template #body="slotProps">
+          {{ formatDate(slotProps.data.startTime) }}
+        </template>
+      </Column>
+      <Column header="End Time">
+        <template #body="slotProps">
+          {{ formatDate(slotProps.data.endTime) }}
+        </template>
+      </Column>
+      <Column field="capacity" header="Capacity" />
+      <Column>
+        <template #body="slotProps">
+          <div class="flex gap-2">
+            <Button
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-text"
+              @click="openUpdateDialog(slotProps.data)"
+            />
+            <Button
+              icon="pi pi-users"
+              class="p-button-rounded p-button-text"
+              @click="openRegistrationsSidebar(slotProps.data)"
+            />
+          </div>
+        </template>
+      </Column>
+    </DataTableCard>
+  </div>
 
   <UpdateEventDialog
     v-model:visible="updateDialogVisible"
@@ -56,6 +64,8 @@ import { eventService } from '@/services/eventService'
 import UpdateEventDialog from '@/components/UpdateEventItem.vue'
 import EventSidebar from '@/components/EventSidebarItem.vue'
 import DataTableCard from '@/components/DataTableCard.vue'
+import NewEventFormPopover from '@/components/NewEventFormPopover.vue'
+import Titlebar from '@/components/Titlebar.vue'
 
 const events = ref([])
 const loading = ref(true)
@@ -102,3 +112,14 @@ onMounted(() => {
   fetchEvents()
 })
 </script>
+
+<style scoped>
+.my-event-view-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+  gap: 1rem;
+}
+</style>

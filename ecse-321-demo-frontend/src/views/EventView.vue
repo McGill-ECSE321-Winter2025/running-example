@@ -1,34 +1,44 @@
 <template>
-  <DataTableCard
-    title="Events"
-    :data="events"
-    :loading="loading"
-    :error="error"
-    :showNewButton="true"
-    @search="handleSearch"
-    @new="handleNew"
-  >
-    <Column field="description" header="Description" />
-    <Column field="eventType" header="Type" />
-    <Column header="Start Time">
-      <template #body="slotProps">
-        {{ formatDate(slotProps.data.startTime) }}
+  <div class="event-view-container">
+    <Titlebar title="Events" :showNewButton="true">
+      <template #newButton>
+        <NewEventFormPopover />
       </template>
-    </Column>
-    <Column header="End Time">
-      <template #body="slotProps">
-        {{ formatDate(slotProps.data.endTime) }}
-      </template>
-    </Column>
-    <Column field="remainingSeats" header="Seats" />
-  </DataTableCard>
+    </Titlebar>
+
+    <DataTableCard
+      title="Events"
+      :data="events"
+      :loading="loading"
+      :error="error"
+      :showNewButton="true"
+      @search="handleSearch"
+      @new="handleNew"
+    >
+      <Column field="description" header="Description" />
+      <Column field="eventType" header="Type" />
+      <Column header="Start Time">
+        <template #body="slotProps">
+          {{ formatDate(slotProps.data.startTime) }}
+        </template>
+      </Column>
+      <Column header="End Time">
+        <template #body="slotProps">
+          {{ formatDate(slotProps.data.endTime) }}
+        </template>
+      </Column>
+      <Column field="remainingSeats" header="Seats" />
+    </DataTableCard>
+  </div>
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue'
 import { eventService } from '@/services/eventService'
 import Column from 'primevue/column'
+import Titlebar from '@/components/Titlebar.vue'
 import DataTableCard from '@/components/DataTableCard.vue'
+import NewEventFormPopover from '@/components/NewEventFormPopover.vue'
 
 const events = ref([])
 const loading = ref(true)
@@ -66,3 +76,14 @@ onMounted(() => {
   fetchEvents()
 })
 </script>
+
+<style scoped>
+.event-view-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+  gap: 1rem;
+}
+</style>

@@ -1,12 +1,5 @@
 <template>
   <div class="datatable-card-container">
-    <div class="header">
-      <TitlebarItem :title="title" :showNewButton="true">
-        <template #newButton>
-          <NewEventFormPopover />
-        </template>
-      </TitlebarItem>
-    </div>
     <div class="table-wrapper">
       <div v-if="loading" class="loading-state">
         <ProgressSpinner />
@@ -36,8 +29,6 @@
 <script setup>
 import DataTable from 'primevue/datatable'
 import ProgressSpinner from 'primevue/progressspinner'
-import TitlebarItem from '@/components/TitlebarItem.vue'
-import NewEventFormPopover from '@/components/NewEventFormPopover.vue'
 
 defineProps({
   title: {
@@ -72,8 +63,6 @@ defineProps({
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 1rem;
-  gap: 1rem;
 }
 
 .header {
