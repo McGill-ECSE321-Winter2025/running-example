@@ -1,6 +1,9 @@
 <template>
   <div class="my-event-view-container">
     <Titlebar title="My Events" :showNewButton="true">
+      <template #filterButton>
+        <EventFilterPopover />
+      </template>
       <template #newButton>
         <NewEventFormPopover />
       </template>
@@ -66,6 +69,7 @@ import EventSidebar from '@/components/EventSidebarItem.vue'
 import DataTableCard from '@/components/DataTableCard.vue'
 import NewEventFormPopover from '@/components/NewEventFormPopover.vue'
 import Titlebar from '@/components/TitleBar.vue'
+import EventFilterPopover from '@/components/EventFilterPopover.vue'
 
 const events = ref([])
 const loading = ref(true)
