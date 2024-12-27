@@ -1,6 +1,9 @@
 <template>
   <div class="event-view-container">
     <Titlebar title="Events" :showNewButton="true">
+      <template #filterButton>
+        <EventFilterPopover />
+      </template>
       <template #newButton>
         <NewEventFormPopover />
       </template>
@@ -36,9 +39,10 @@
 import { onMounted, ref } from 'vue'
 import { eventService } from '@/services/eventService'
 import Column from 'primevue/column'
-import Titlebar from '@/components/Titlebar.vue'
+import Titlebar from '@/components/TitleBar.vue'
 import DataTableCard from '@/components/DataTableCard.vue'
 import NewEventFormPopover from '@/components/NewEventFormPopover.vue'
+import EventFilterPopover from '@/components/EventFilterPopover.vue'
 
 const events = ref([])
 const loading = ref(true)

@@ -20,7 +20,7 @@ import { ref, onMounted } from 'vue'
 import Column from 'primevue/column'
 import api from '@/services/api'
 import DataTableCard from '@/components/DataTableCard.vue'
-import Titlebar from '@/components/Titlebar.vue'
+import Titlebar from '@/components/TitleBar.vue'
 
 const registrations = ref([])
 const loading = ref(true)

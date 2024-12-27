@@ -14,8 +14,10 @@
     </template>
 
     <template #end>
-      <slot name="filterButton"></slot>
-      <slot name="newButton"></slot>
+      <div class="flex flex-row gap-2">
+        <slot name="filterButton"></slot>
+        <slot name="newButton"></slot>
+      </div>
     </template>
   </Toolbar>
 </template>

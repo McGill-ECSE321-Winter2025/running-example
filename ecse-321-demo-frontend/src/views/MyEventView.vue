@@ -65,7 +65,7 @@ import UpdateEventDialog from '@/components/UpdateEventItem.vue'
 import EventSidebar from '@/components/EventSidebarItem.vue'
 import DataTableCard from '@/components/DataTableCard.vue'
 import NewEventFormPopover from '@/components/NewEventFormPopover.vue'
-import Titlebar from '@/components/Titlebar.vue'
+import Titlebar from '@/components/TitleBar.vue'
 
 const events = ref([])
 const loading = ref(true)
