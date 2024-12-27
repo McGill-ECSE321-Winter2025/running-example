@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import Dialog from 'primevue/dialog'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
@@ -62,7 +62,7 @@ import Button from 'primevue/button'
 import IftaLabel from 'primevue/iftalabel'
 import api from '@/services/api'
 
-defineProps({
+const props = defineProps({
   visible: {
     type: Boolean,
     required: true,
@@ -122,6 +122,16 @@ const handleSubmit = async () => {
     loading.value = false
   }
 }
+
+watch(
+  () => props.visible,
+  (newVal) => {
+    if (!newVal) {
+      isSignupMode.value = false
+      resetForm()
+    }
+  },
+)
 </script>
 
 <style scoped>
