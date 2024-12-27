@@ -19,20 +19,20 @@ const routes = [
   {
     path: '/my-events',
     name: 'My Events',
-    component: MyEvents,
     meta: { requiresAuth: true },
+    component: MyEvents,
   },
   {
     path: '/registrations',
     name: 'Registrations',
-    component: Registrations,
     meta: { requiresAuth: true },
+    component: Registrations,
   },
   {
     path: '/account',
     name: 'AccountSettings',
-    component: AccountSettings,
     meta: { requiresAuth: true },
+    component: AccountSettings,
   },
 ]
 
@@ -46,7 +46,7 @@ router.beforeEach((to, from, next) => {
 
   if (to.meta.requiresAuth && !isAuthenticated) {
     window.dispatchEvent(new CustomEvent('show-login-modal'))
-    next(false) // Prevent navigation
+    next(false)
   } else {
     next()
   }

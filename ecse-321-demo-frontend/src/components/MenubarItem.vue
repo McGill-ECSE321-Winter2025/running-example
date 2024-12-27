@@ -49,11 +49,15 @@ import Menubar from 'primevue/menubar'
 import Button from 'primevue/button'
 import { useRouter } from 'vue-router'
 
-const showLoginModal = inject('showLoginModal')
+const emit = defineEmits(['show-login'])
+
+const router = useRouter()
 const username = inject('username')
 const isLoggedIn = inject('isLoggedIn')
 
-const router = useRouter()
+const showLoginModal = () => {
+  emit('show-login')
+}
 
 const handleLogout = () => {
   localStorage.removeItem('userId')

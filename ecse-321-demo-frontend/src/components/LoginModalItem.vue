@@ -9,21 +9,32 @@
     :header="isSignupMode ? 'Sign Up' : 'Login'"
   >
     <div class="flex flex-column gap-2">
-      <div class="p-float-label">
-        <InputText id="username" v-model="credentials.username" />
+      <IftaLabel>
+        <InputText id="username" v-model="credentials.username" fluid />
         <label for="username">Username</label>
-      </div>
+      </IftaLabel>
 
-      <div class="p-float-label mt-4">
+      <IftaLabel>
         <Password
           id="password"
           v-model="credentials.password"
           :feedback="isSignupMode"
           toggleMask
+          fluid
         />
         <label for="password">Password</label>
-      </div>
+      </IftaLabel>
 
+      <IftaLabel v-if="isSignupMode">
+        <Password
+          id="confirmPassword"
+          v-model="credentials.confirmPassword"
+          :feedback="isSignupMode"
+          toggleMask
+          fluid
+        />
+        <label for="confirmpassword">Confirm Password</label>
+      </IftaLabel>
       <small v-if="errorMessage" class="p-error">{{ errorMessage }}</small>
 
       <div class="flex flex-column gap-2 mt-4">
@@ -48,6 +59,7 @@ import Dialog from 'primevue/dialog'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
 import Button from 'primevue/button'
+import IftaLabel from 'primevue/iftalabel'
 import api from '@/services/api'
 
 defineProps({
@@ -65,6 +77,7 @@ const errorMessage = ref('')
 const credentials = ref({
   username: '',
   password: '',
+  confirmPassowrd: '',
 })
 
 const resetForm = () => {
