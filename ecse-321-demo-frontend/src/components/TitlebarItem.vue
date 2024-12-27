@@ -14,36 +14,17 @@
     </template>
 
     <template #end>
-      <Button
-        icon="pi pi-filter"
-        variant="text"
-        @click="toggleFilterEvent($event)"
-        aria-label="Filter"
-      />
-      <Popover ref="filterOverlay" :showCloseIcon="true">
-        <slot name="filterContent"></slot>
-      </Popover>
-      <Button
-        v-if="showNewButton"
-        icon="pi pi-plus"
-        class="ml-2"
-        variant="text"
-        label="New Event"
-        @click="handleNew"
-        aria-label="New"
-      />
+      <slot name="filterButton"></slot>
+      <slot name="newButton"></slot>
     </template>
   </Toolbar>
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import Toolbar from 'primevue/toolbar'
-import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import IconField from 'primevue/iconfield'
 import InputIcon from 'primevue/inputicon'
-import Popover from 'primevue/popover'
 
 defineProps({
   title: {
@@ -55,14 +36,6 @@ defineProps({
     default: false,
   },
 })
-
-const emit = defineEmits(['search', 'new'])
-
-const filterOverlay = ref(null)
-
-const handleNew = () => {
-  emit('new')
-}
 </script>
 
 <style scoped>

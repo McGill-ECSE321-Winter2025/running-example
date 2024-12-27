@@ -1,14 +1,9 @@
 <template>
   <div class="datatable-card-container">
     <div class="header">
-      <TitlebarItem
-        :title="title"
-        :showNewButton="showNewButton"
-        @search="handleSearch"
-        @new="handleNew"
-      >
-        <template #filterContent>
-          <slot name="filterContent"></slot>
+      <TitlebarItem :title="title" :showNewButton="true">
+        <template #newButton>
+          <NewEventFormPopover />
         </template>
       </TitlebarItem>
     </div>
@@ -39,13 +34,12 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
 import DataTable from 'primevue/datatable'
 import ProgressSpinner from 'primevue/progressspinner'
-import Card from 'primevue/card'
 import TitlebarItem from '@/components/TitlebarItem.vue'
+import NewEventFormPopover from '@/components/NewEventFormPopover.vue'
 
-const props = defineProps({
+defineProps({
   title: {
     type: String,
     required: true,
@@ -71,16 +65,6 @@ const props = defineProps({
     default: 25,
   },
 })
-
-const emit = defineEmits(['search', 'new'])
-
-const handleSearch = (searchTerm) => {
-  emit('search', searchTerm)
-}
-
-const handleNew = () => {
-  emit('new')
-}
 </script>
 
 <style scoped>

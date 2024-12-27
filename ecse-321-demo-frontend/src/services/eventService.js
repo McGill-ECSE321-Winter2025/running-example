@@ -40,4 +40,14 @@ export const eventService = {
       throw error
     }
   },
+
+  async createEvent(eventData) {
+    try {
+      const response = await api.post('/events', eventData)
+      return response.data
+    } catch (error) {
+      console.error('Error creating event:', error)
+      throw error
+    }
+  },
 }

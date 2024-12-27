@@ -1,38 +1,40 @@
 <template>
   <div class="app-container flex flex-col min-h-screen">
-    <MenubarItem class="flex-shrink-0" />
+    <MenubarItem class="flex-shrink-0" @show-login="showLoginModal" />
 
     <div class="main-content flex-grow overflow-hidden">
       <router-view />
     </div>
 
-    <LoginModal v-model:visible="loginModalVisible" @loginSuccess="handleLoginSuccess" />
+    <LoginModalItem
+      ref="loginModal"
+      @loginSuccess="handleLoginSuccess"
+      :visible="isLoginModalVisible"
+      @update:visible="isLoginModalVisible = $event"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, provide } from 'vue'
 import MenubarItem from './components/MenubarItem.vue'
-import LoginModal from './components/LoginModalItem.vue'
-
-const loginModalVisible = ref(false)
+import LoginModalItem from './components/LoginModalItem.vue'
 
 const username = ref(localStorage.getItem('username') || 'Guest')
 const isLoggedIn = ref(!!localStorage.getItem('userId'))
+const isLoginModalVisible = ref(false)
+
+provide('username', username)
+provide('isLoggedIn', isLoggedIn)
 
 const showLoginModal = () => {
-  loginModalVisible.value = true
+  isLoginModalVisible.value = true
 }
 
 const handleLoginSuccess = () => {
   username.value = localStorage.getItem('username') || 'Guest'
   isLoggedIn.value = !!localStorage.getItem('userId')
-  loginModalVisible.value = false
 }
-
-provide('showLoginModal', showLoginModal)
-provide('username', username)
-provide('isLoggedIn', isLoggedIn)
 </script>
 
 <style>
