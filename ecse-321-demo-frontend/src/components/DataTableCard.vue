@@ -63,10 +63,7 @@ defineProps({
   display: flex;
   flex-direction: column;
   height: 100%;
-}
-
-.header {
-  flex-shrink: 0;
+  overflow-y: hidden;
 }
 
 .table-wrapper {
