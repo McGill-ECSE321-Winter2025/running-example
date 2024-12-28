@@ -25,7 +25,7 @@ public class UserAccount {
 
     private String password;
 
-    private Timestamp created_at;
+    private Timestamp createdAt;
 
     @OneToMany
     private List<Event> eventsCreated;
@@ -35,6 +35,6 @@ public class UserAccount {
     public UserAccount(String username, String password) {
         this.username = username;
         this.password = password;
-        this.created_at = Timestamp.from(Instant.now());
+        this.createdAt = Timestamp.from(Instant.now());
     }
 }

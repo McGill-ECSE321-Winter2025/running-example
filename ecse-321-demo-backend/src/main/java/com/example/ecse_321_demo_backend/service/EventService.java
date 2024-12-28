@@ -95,6 +95,15 @@ public class EventService {
     }
 
     @Transactional(readOnly = true)
+    public Event getEvent(UUID eventId) {
+        Event event = eventRepository
+            .findById(eventId)
+            .orElseThrow(() -> new IllegalArgumentException("Event not found"));
+
+        return event;
+    }
+
+    @Transactional(readOnly = true)
     public List<Event> getEvents(
         UUID createdBy,
         Timestamp startTime,

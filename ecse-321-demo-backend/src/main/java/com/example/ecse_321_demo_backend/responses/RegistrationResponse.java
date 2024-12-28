@@ -1,6 +1,7 @@
 package com.example.ecse_321_demo_backend.responses;
 
 import com.example.ecse_321_demo_backend.models.Registration;
+import java.sql.Timestamp;
 import java.util.UUID;
 import lombok.Data;
 
@@ -12,6 +13,7 @@ public class RegistrationResponse {
     private String creatorUsername;
     private UUID eventId;
     private String eventDescription;
+    private Timestamp registeredAt;
 
     public static RegistrationResponse fromRegistration(
         Registration registration
@@ -24,6 +26,7 @@ public class RegistrationResponse {
         );
         response.setEventId(registration.getEvent().getId());
         response.setEventDescription(registration.getEvent().getDescription());
+        response.setRegisteredAt(registration.getRegistrationAt());
         return response;
     }
 }
