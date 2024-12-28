@@ -27,7 +27,7 @@ public class Registration {
     @JoinColumn(name = "user_id")
     private UserAccount user;
 
-    private Timestamp registrationAt;
+    private Timestamp registeredAt;
 
     public Registration() {}
 
@@ -35,6 +35,6 @@ public class Registration {
         this.id = new RegistrationId(event.getId(), user.getId());
         this.event = event;
         this.user = user;
-        this.registrationAt = Timestamp.from(Instant.now());
+        this.registeredAt = Timestamp.from(Instant.now());
     }
 }

@@ -53,7 +53,7 @@ SELECT
     (random() * 50 + 20)::int,
     'ONLINE',
     'https://meet.virtual.com/' || md5(random()::text)
-FROM generate_series(1, 40);
+FROM generate_series(1, 100);
 
 -- Generate 25 in-person events for each specific user (total 100)
 INSERT INTO events (
@@ -97,7 +97,7 @@ SELECT
         WHEN 3 THEN 'Conference Center, Room ' || (random() * 100)::int
         ELSE 'Startup Space, ' || (random() * 500)::int || ' Innovation Drive'
     END)
-FROM generate_series(1, 40);
+FROM generate_series(1, 100);
 
 WITH RECURSIVE RandomRegistrations AS (
     -- Get all possible user-event combinations
@@ -116,11 +116,11 @@ FilteredRegistrations AS (
         rr.event_id
     FROM RandomRegistrations rr
     JOIN events e ON e.id = rr.event_id
-    WHERE rr.reg_number <= 8  -- Take 8 registrations per user
+    WHERE rr.reg_number <= 50  -- Take 50 registrations per user
     AND e.created_by_id != rr.user_id  -- Users can't register for their own events
 )
-INSERT INTO registration (event_id, user_id)
-SELECT DISTINCT event_id, user_id
+INSERT INTO registration (event_id, user_id, registered_at)
+SELECT DISTINCT event_id, user_id, CURRENT_TIMESTAMP + (random() * interval '30 days')
 FROM FilteredRegistrations;
 
 -- Update participant counts

@@ -1,7 +1,6 @@
 <template>
   <div class="registration-view-container">
     <Toast />
-    <ConfirmPopup></ConfirmPopup>
 
     <Titlebar title="Registrations">
       <template #filterButton>
@@ -21,6 +20,7 @@
           scrollable
           scrollHeight="flex"
           dataKey="id"
+          @rowExpand="onRowExpand"
         >
           <template #header>
             <div class="flex justify-between items-center w-full">
@@ -34,7 +34,11 @@
           <Column expander style="width: 3rem" />
           <Column field="creatorUsername" header="Creator" />
           <Column field="eventDescription" header="Event Title" />
-          <Column field="registrationDate" header="Registration Date" />
+          <Column header="Registerd At">
+            <template #body="slotProps">
+              {{ formatDate(slotProps.data.registeredAt) }}
+            </template>
+          </Column>
           <Column class="w-24 !text-end">
             <template #body>
               <Button icon="pi pi-trash" severity="secondary" rounded @click="unregister" />
@@ -42,8 +46,29 @@
           </Column>
 
           <template #expansion="slotProps">
-            <div class="p-2">
-              <p><strong>Location/Link:</strong> {{slotProps.}}</p>
+            <div class="expanded-row-content">
+              <div v-if="eventDetails[slotProps.data.eventId]">
+                <p>
+                  <strong>Description:</strong>
+                  {{ eventDetails[slotProps.data.eventId].description }}
+                </p>
+                <p><strong>Type:</strong> {{ eventDetails[slotProps.data.eventId].eventType }}</p>
+                <p>
+                  <strong>Start Time:</strong>
+                  {{ formatDate(eventDetails[slotProps.data.eventId].startTime) }}
+                </p>
+                <p>
+                  <strong>End Time:</strong>
+                  {{ formatDate(eventDetails[slotProps.data.eventId].endTime) }}
+                </p>
+                <p>
+                  <strong>Location/Link:</strong>
+                  {{ eventDetails[slotProps.data.eventId].locationOrLink }}
+                </p>
+              </div>
+              <div v-else>
+                <ProgressSpinner />
+              </div>
             </div>
           </template>
         </DataTable>
@@ -55,9 +80,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useToast } from 'primevue/usetoast'
-import { useConfirm } from 'primevue/useconfirm'
+import { eventService } from '@/services/eventService'
+import { registrationService } from '@/services/registrationService'
+import formatDate from '@/utils'
 import Column from 'primevue/column'
-import api from '@/services/api'
 import DataTableCard from '@/components/DataTableCard.vue'
 import Button from 'primevue/button'
 import DataTable from 'primevue/datatable'
@@ -66,25 +92,66 @@ import Toast from 'primevue/toast'
 import ConfirmPopup from 'primevue/confirmpopup'
 import RegistrationFilterPopover from '@/components/RegistrationFilterPopover.vue'
 
-const registrations = ref({})
+const registrations = ref([])
 const loading = ref(true)
 const error = ref(null)
 const expandedRows = ref({})
+const eventDetails = ref({})
 const toast = useToast()
-const confirm = useConfirm()
 
 const fetchRegistrations = async () => {
   try {
     loading.value = true
     error.value = null
-    const response = await api.get('/registrations/my-registrations')
-    registrations.value = response.data
+    const response = await registrationService.getUserRegistrations()
+    registrations.value = response
   } catch (err) {
     error.value = 'Failed to load registrations. Please try again later.'
     console.error('Error loading registrations:', err)
   } finally {
     loading.value = false
   }
+}
+
+const fetchEventDetails = async (eventId) => {
+  try {
+    if (!eventDetails.value[eventId]) {
+      const event = await eventService.getEvent(eventId)
+      eventDetails.value = {
+        ...eventDetails.value,
+        [eventId]: event,
+      }
+    }
+  } catch (err) {
+    console.error('Error loading event details:', err)
+  }
+}
+
+const onRowExpand = async (event) => {
+  await fetchEventDetails(event.data.eventId)
+}
+
+const expandAll = async () => {
+  expandedRows.value = registrations.value.reduce((acc, p) => {
+    acc[p.id] = true
+    return acc
+  }, {})
+
+  for (const registration of registrations.value) {
+    await fetchEventDetails(registration.eventId)
+  }
+}
+
+const collapseAll = () => {
+  expandedRows.value = {}
+}
+
+const unregister = () => {
+  toast.add({
+    severity: 'info',
+    summary: 'Up to you to implement!',
+    life: 3000,
+  })
 }
 
 onMounted(() => {

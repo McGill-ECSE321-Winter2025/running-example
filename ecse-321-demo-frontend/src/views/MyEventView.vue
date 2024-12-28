@@ -95,6 +95,7 @@
 import { ref, onMounted } from 'vue'
 import Column from 'primevue/column'
 import { eventService } from '@/services/eventService'
+import { registrationService } from '@/services/registrationService'
 import { useToast } from 'primevue/usetoast'
 import { useConfirm } from 'primevue/useconfirm'
 import DataTableCard from '@/components/DataTableCard.vue'
@@ -144,7 +145,7 @@ const fetchEvents = async () => {
 
 const fetchRegistrations = async (eventId) => {
   try {
-    const registrations = await eventService.getEventRegistrations(eventId)
+    const registrations = await registrationService.getEventRegistrations(eventId)
     eventRegistrations.value = {
       ...eventRegistrations.value,
       [eventId]: registrations,

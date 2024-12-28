@@ -26,7 +26,7 @@ public class RegistrationResponse {
         );
         response.setEventId(registration.getEvent().getId());
         response.setEventDescription(registration.getEvent().getDescription());
-        response.setRegisteredAt(registration.getRegistrationAt());
+        response.setRegisteredAt(registration.getRegisteredAt());
         return response;
     }
 }
