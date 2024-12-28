@@ -76,6 +76,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { eventService } from '@/services/eventService'
+import { registrationService } from '@/services/registrationService'
 import { useToast } from 'primevue/usetoast'
 import { useConfirm } from 'primevue/useconfirm'
 import Button from 'primevue/button'
@@ -155,7 +156,7 @@ const registerForEvent = (event) => {
     },
     accept: async () => {
       try {
-        await eventService.registerForEvent(event.id)
+        await registrationService.registerForEvent(event.id)
         toast.add({
           severity: 'success',
           summary: 'Registered',

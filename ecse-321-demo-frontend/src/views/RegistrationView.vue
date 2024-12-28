@@ -89,8 +89,8 @@ import Button from 'primevue/button'
 import DataTable from 'primevue/datatable'
 import Titlebar from '@/components/TitleBar.vue'
 import Toast from 'primevue/toast'
-import ConfirmPopup from 'primevue/confirmpopup'
 import RegistrationFilterPopover from '@/components/RegistrationFilterPopover.vue'
+import ProgressSpinner from 'primevue/progressspinner'
 
 const registrations = ref([])
 const loading = ref(true)
