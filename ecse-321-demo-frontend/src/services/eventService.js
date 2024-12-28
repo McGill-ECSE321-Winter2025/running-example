@@ -1,6 +1,7 @@
 import api from './api'
 
 export const eventService = {
+  // GET /events
   async getAllEvents() {
     try {
       const response = await api.get('/events')
@@ -11,6 +12,7 @@ export const eventService = {
     }
   },
 
+  // GET /events?createdBy={userId}
   async getEventsByCreator(userId) {
     try {
       const response = await api.get(`/events?createdBy=${userId}`)
@@ -21,6 +23,18 @@ export const eventService = {
     }
   },
 
+  // GET /events/{eventId}
+  async getEvent(eventId) {
+    try {
+      const response = await api.get(`/events/${eventId}`)
+      return response.data
+    } catch (error) {
+      console.error('Error fetching event:', error)
+      throw error
+    }
+  },
+
+  // PUT /events/{eventId}
   async updateEvent(eventId, eventData) {
     try {
       const response = await api.put(`/events/${eventId}`, eventData)
@@ -31,16 +45,7 @@ export const eventService = {
     }
   },
 
-  async getEventRegistrations(eventId) {
-    try {
-      const response = await api.get(`/registrations/${eventId}`)
-      return response.data
-    } catch (error) {
-      console.error('Error fetching event registrations:', error)
-      throw error
-    }
-  },
-
+  // POST /events
   async createEvent(eventData) {
     try {
       const response = await api.post('/events', eventData)

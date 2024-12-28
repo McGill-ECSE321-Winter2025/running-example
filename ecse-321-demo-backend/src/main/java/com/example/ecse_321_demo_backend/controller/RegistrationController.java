@@ -20,12 +20,14 @@ public class RegistrationController {
     @PostMapping("/{eventId}")
     public ResponseEntity<?> registerForEvent(@PathVariable UUID eventId) {
         registrationService.registerForEvent(eventId);
+
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{eventId}")
     public ResponseEntity<?> unregisterFromEvent(@PathVariable UUID eventId) {
         registrationService.unregisterFromEvent(eventId);
+
         return ResponseEntity.ok().build();
     }
 
@@ -36,6 +38,7 @@ public class RegistrationController {
             .stream()
             .map(RegistrationResponse::fromRegistration)
             .toList();
+
         return ResponseEntity.ok(registrations);
     }
 
@@ -48,6 +51,7 @@ public class RegistrationController {
             .stream()
             .map(RegistrationResponse::fromRegistration)
             .toList();
+
         return ResponseEntity.ok(registrations);
     }
 }

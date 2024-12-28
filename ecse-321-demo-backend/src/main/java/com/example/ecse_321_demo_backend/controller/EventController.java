@@ -39,6 +39,13 @@ public class EventController {
         return ResponseEntity.ok(EventResponse.fromEvent(event));
     }
 
+    @GetMapping("/{eventId}")
+    public ResponseEntity<EventResponse> getEvent(@PathVariable UUID eventId) {
+        Event event = eventService.getEvent(eventId);
+
+        return ResponseEntity.ok(EventResponse.fromEvent(event));
+    }
+
     @GetMapping
     public ResponseEntity<List<EventResponse>> getEvents(
         @RequestParam(required = false) UUID createdBy,
@@ -50,6 +57,7 @@ public class EventController {
             .stream()
             .map(EventResponse::fromEvent)
             .toList();
+
         return ResponseEntity.ok(events);
     }
 }

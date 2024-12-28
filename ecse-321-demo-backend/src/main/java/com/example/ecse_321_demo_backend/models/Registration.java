@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
+import java.sql.Timestamp;
+import java.time.Instant;
 import lombok.Getter;
 
 @Entity
@@ -25,11 +27,14 @@ public class Registration {
     @JoinColumn(name = "user_id")
     private UserAccount user;
 
+    private Timestamp registeredAt;
+
     public Registration() {}
 
     public Registration(Event event, UserAccount user) {
         this.id = new RegistrationId(event.getId(), user.getId());
         this.event = event;
         this.user = user;
+        this.registeredAt = Timestamp.from(Instant.now());
     }
 }

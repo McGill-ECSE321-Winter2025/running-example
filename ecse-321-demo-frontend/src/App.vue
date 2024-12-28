@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { ref, provide } from 'vue'
+import { ref, provide, onMounted } from 'vue'
 import MenubarItem from './components/MenubarItem.vue'
 import LoginModalItem from './components/LoginModalItem.vue'
 
@@ -35,6 +35,9 @@ const handleLoginSuccess = () => {
   username.value = localStorage.getItem('username') || 'Guest'
   isLoggedIn.value = !!localStorage.getItem('userId')
 }
+onMounted(() => {
+  window.addEventListener('show-login-modal', showLoginModal)
+})
 </script>
 
 <style>
