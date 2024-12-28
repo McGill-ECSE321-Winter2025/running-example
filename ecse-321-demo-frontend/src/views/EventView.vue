@@ -24,8 +24,6 @@
           scrollable
           scrollHeight="flex"
           dataKey="id"
-          @rowExpand="onRowExpand"
-          @rowCollapse="onRowCollapse"
         >
           <template #header>
             <div class="flex justify-between items-center w-full">
@@ -53,15 +51,20 @@
           <Column field="remainingSeats" header="Seats" />
 
           <template #expansion="slotProps">
-            <div class="p-4">
-              <h5>Details for {{ slotProps.data.description }}</h5>
-              <p><strong>Location/Link:</strong> {{ slotProps.data.locationOrLink }}</p>
-              <p><strong>Created By:</strong> {{ slotProps.data.createdBy }}</p>
-              <Button
-                label="Register"
-                icon="pi pi-check"
-                @click="registerForEvent(slotProps.data)"
-              />
+            <div class="expanded-row-content">
+              <div class="flex justify-between items-center">
+                <div>
+                  <p><strong>Location/Link:</strong> {{ slotProps.data.locationOrLink }}</p>
+                  <p><strong>Created By:</strong> {{ slotProps.data.createdBy }}</p>
+                </div>
+                <div>
+                  <Button
+                    label="Register"
+                    icon="pi pi-check"
+                    @click="registerForEvent(slotProps.data)"
+                  />
+                </div>
+              </div>
             </div>
           </template>
         </DataTable>
@@ -120,24 +123,6 @@ const fetchEvents = async () => {
   }
 }
 
-const onRowExpand = (event) => {
-  toast.add({
-    severity: 'info',
-    summary: 'Event Expanded',
-    detail: event.data.description,
-    life: 3000,
-  })
-}
-
-const onRowCollapse = (event) => {
-  toast.add({
-    severity: 'info',
-    summary: 'Event Collapsed',
-    detail: event.data.description,
-    life: 3000,
-  })
-}
-
 const expandAll = () => {
   expandedRows.value = events.value.reduce((acc, p) => {
     acc[p.id] = true
@@ -160,7 +145,14 @@ const registerForEvent = (event) => {
   confirm.require({
     target: event.currentTarget,
     message: `Are you sure you want to register for event: ${event.description}?`,
-    icon: 'pi pi-exclamation-triangle',
+    icon: 'pi pi-exclamation-circle',
+    rejectProps: {
+      label: 'Cancel',
+      severity: 'secondary',
+    },
+    acceptProps: {
+      label: 'Confirm',
+    },
     accept: async () => {
       try {
         await eventService.registerForEvent(event.id)
@@ -170,11 +162,11 @@ const registerForEvent = (event) => {
           detail: `You have successfully registered for the event: ${event.description}`,
           life: 3000,
         })
-      } catch {
+      } catch (err) {
         toast.add({
           severity: 'error',
           summary: 'Registration Failed',
-          detail: 'Failed to register for the event. Please try again later.',
+          detail: `Failed to register for the event: ${err}`,
           life: 3000,
         })
       }
@@ -195,5 +187,23 @@ onMounted(() => {
   width: 100%;
   padding: 1rem;
   gap: 1rem;
+}
+
+.expanded-row-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  padding-right: 2rem;
+  padding-left: 2rem;
+}
+
+.expanded-row-content .flex {
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.expanded-row-content p {
+  margin: 0;
 }
 </style>
