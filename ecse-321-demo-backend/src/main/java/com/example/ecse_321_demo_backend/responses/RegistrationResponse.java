@@ -9,6 +9,7 @@ public class RegistrationResponse {
 
     private UUID userId;
     private String username;
+    private String creatorUsername;
     private UUID eventId;
     private String eventDescription;
 
@@ -17,7 +18,8 @@ public class RegistrationResponse {
     ) {
         RegistrationResponse response = new RegistrationResponse();
         response.setUserId(registration.getUser().getId());
-        response.setUsername(
+        response.setUsername(registration.getUser().getUsername());
+        response.setCreatorUsername(
             registration.getEvent().getCreated_by().getUsername()
         );
         response.setEventId(registration.getEvent().getId());

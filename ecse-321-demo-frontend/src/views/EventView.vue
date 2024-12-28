@@ -15,10 +15,10 @@
     <DataTableCard :loading="loading" :error="error">
       <template #datatable>
         <DataTable
-          v-model:expandedRows="expandedRows"
+          :expandedRows="expandedRows"
           :value="events"
           :paginator="true"
-          :rows="25"
+          :rows="10"
           :resizableColumns="true"
           columnResizeMode="fit"
           scrollable
@@ -35,7 +35,7 @@
             </div>
           </template>
 
-          <Column expander style="width: 5rem" />
+          <Column expander style="width: 3rem" />
           <Column field="description" header="Description" />
           <Column field="eventType" header="Type" />
           <Column header="Start Time">
@@ -131,7 +131,7 @@ const expandAll = () => {
 }
 
 const collapseAll = () => {
-  expandedRows.value = null
+  expandedRows.value = {}
 }
 
 const registerForEvent = (event) => {
@@ -194,8 +194,8 @@ onMounted(() => {
   flex-direction: column;
   width: 100%;
   overflow: hidden;
-  padding-right: 2rem;
-  padding-left: 2rem;
+  padding: 1rem;
+  gap: 1rem;
 }
 
 .expanded-row-content .flex {
