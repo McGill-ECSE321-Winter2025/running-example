@@ -17,7 +17,6 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import ProgressSpinner from 'primevue/progressspinner'
 
 defineProps({

@@ -18,7 +18,7 @@
           :expandedRows="expandedRows"
           :value="events"
           :paginator="true"
-          :rows="10"
+          :rows="25"
           :resizeableColumns="true"
           columnResizeMode="fit"
           scrollable

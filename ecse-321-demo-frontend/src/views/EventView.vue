@@ -18,8 +18,8 @@
           :expandedRows="expandedRows"
           :value="events"
           :paginator="true"
-          :rows="10"
-          :resizableColumns="true"
+          :rows="25"
+          :resizeableColumns="true"
           columnResizeMode="fit"
           scrollable
           scrollHeight="flex"
@@ -88,7 +88,7 @@ import EventFilterPopover from '@/components/EventFilterPopover.vue'
 import Toast from 'primevue/toast'
 import ConfirmPopup from 'primevue/confirmpopup'
 
-const events = ref()
+const events = ref({})
 const loading = ref(true)
 const error = ref(null)
 const expandedRows = ref({})
