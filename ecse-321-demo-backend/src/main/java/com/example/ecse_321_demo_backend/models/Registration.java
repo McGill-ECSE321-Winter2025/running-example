@@ -9,8 +9,10 @@ import jakarta.persistence.MapsId;
 import java.sql.Timestamp;
 import java.time.Instant;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 @Getter
 public class Registration {
 
@@ -28,8 +30,6 @@ public class Registration {
     private UserAccount user;
 
     private Timestamp registeredAt;
-
-    public Registration() {}
 
     public Registration(Event event, UserAccount user) {
         this.id = new RegistrationId(event.getId(), user.getId());

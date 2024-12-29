@@ -60,7 +60,7 @@ public class EventRepositoryTests {
         assertNotNull(found);
         assertEquals("Test Online Event", found.getDescription());
         assertEquals("http://test.com", found.getInviteLink());
-        assertEquals(testUser.getId(), found.getCreated_by().getId());
+        assertEquals(testUser.getId(), found.getCreatedBy().getId());
     }
 
     @Test
@@ -83,7 +83,7 @@ public class EventRepositoryTests {
         assertNotNull(found);
         assertEquals("Test In-Person Event", found.getDescription());
         assertEquals("Test Location", found.getLocation());
-        assertEquals(testUser.getId(), found.getCreated_by().getId());
+        assertEquals(testUser.getId(), found.getCreatedBy().getId());
     }
 
     @Test

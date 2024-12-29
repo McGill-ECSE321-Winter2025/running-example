@@ -15,12 +15,14 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "events")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "EVENT_TYPE")
+@NoArgsConstructor
 @Getter
 @Setter
 public abstract class Event {
@@ -30,21 +32,19 @@ public abstract class Event {
     private UUID id;
 
     @ManyToOne
-    private UserAccount created_by;
+    private UserAccount createdBy;
 
-    private Timestamp created_at;
+    private Timestamp createdAt;
 
     private String description;
 
-    private Timestamp start_time;
+    private Timestamp startTime;
 
-    private Timestamp end_time;
+    private Timestamp endTime;
 
     private Integer participantsCount;
 
     private Integer capacity;
-
-    public Event() {}
 
     public Event(
         UserAccount creator,
@@ -53,11 +53,11 @@ public abstract class Event {
         Timestamp end_time,
         Integer capacity
     ) {
-        this.created_by = creator;
-        this.created_at = Timestamp.from(Instant.now());
+        this.createdBy = creator;
+        this.createdAt = Timestamp.from(Instant.now());
         this.description = description;
-        this.start_time = start_time;
-        this.end_time = end_time;
+        this.startTime = start_time;
+        this.endTime = end_time;
         this.participantsCount = 0;
         this.capacity = capacity;
     }

@@ -22,7 +22,7 @@ public class RegistrationResponse {
         response.setUserId(registration.getUser().getId());
         response.setUsername(registration.getUser().getUsername());
         response.setCreatorUsername(
-            registration.getEvent().getCreated_by().getUsername()
+            registration.getEvent().getCreatedBy().getUsername()
         );
         response.setEventId(registration.getEvent().getId());
         response.setEventDescription(registration.getEvent().getDescription());

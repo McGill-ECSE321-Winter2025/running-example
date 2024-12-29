@@ -64,7 +64,7 @@ public class EventService {
             .findById(eventId)
             .orElseThrow(() -> new IllegalArgumentException("Event not found"));
 
-        if (!event.getCreated_by().getId().equals(currentUser.getId())) {
+        if (!event.getCreatedBy().getId().equals(currentUser.getId())) {
             throw new UnauthedException(
                 "Only the creator can update the event"
             );
@@ -81,8 +81,8 @@ public class EventService {
         }
 
         event.setDescription(request.getDescription());
-        event.setStart_time(request.getStartTime());
-        event.setEnd_time(request.getEndTime());
+        event.setStartTime(request.getStartTime());
+        event.setEndTime(request.getEndTime());
         event.setCapacity(request.getCapacity());
 
         if (event instanceof OnlineEvent) {
@@ -116,10 +116,10 @@ public class EventService {
             .filter(
                 event ->
                     (createdBy == null ||
-                        event.getCreated_by().getId().equals(createdBy)) &&
+                        event.getCreatedBy().getId().equals(createdBy)) &&
                     (startTime == null ||
-                        !event.getStart_time().before(startTime)) &&
-                    (endTime == null || !event.getEnd_time().after(endTime))
+                        !event.getStartTime().before(startTime)) &&
+                    (endTime == null || !event.getEndTime().after(endTime))
             )
             .toList();
     }

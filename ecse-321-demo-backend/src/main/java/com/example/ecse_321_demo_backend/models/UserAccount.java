@@ -10,9 +10,11 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@NoArgsConstructor
 @Getter
 @Setter
 public class UserAccount {
@@ -29,8 +31,6 @@ public class UserAccount {
 
     @OneToMany
     private List<Event> eventsCreated;
-
-    public UserAccount() {}
 
     public UserAccount(String username, String password) {
         this.username = username;

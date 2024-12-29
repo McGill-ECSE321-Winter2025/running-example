@@ -82,7 +82,7 @@ public class RegistrationServiceTests {
 
     @Test
     void testRegisterForEvent_AlreadyStarted() {
-        testEvent.setStart_time(
+        testEvent.setStartTime(
             Timestamp.from(Instant.now().minusSeconds(3600))
         );
         when(userContext.getCurrentUser()).thenReturn(testUser);
@@ -143,7 +143,7 @@ public class RegistrationServiceTests {
 
     @Test
     void testUnregisterFromEvent_AlreadyStarted() {
-        testEvent.setStart_time(
+        testEvent.setStartTime(
             Timestamp.from(Instant.now().minusSeconds(3600))
         );
         when(userContext.getCurrentUser()).thenReturn(testUser);

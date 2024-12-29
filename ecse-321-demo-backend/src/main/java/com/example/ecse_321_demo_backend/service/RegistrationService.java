@@ -34,7 +34,7 @@ public class RegistrationService {
             .findById(eventId)
             .orElseThrow(() -> new IllegalArgumentException("Event not found"));
 
-        if (event.getStart_time().before(Timestamp.from(Instant.now()))) {
+        if (event.getStartTime().before(Timestamp.from(Instant.now()))) {
             throw new IllegalStateException(
                 "Cannot register for an event that has already started"
             );
@@ -66,7 +66,7 @@ public class RegistrationService {
             .findById(eventId)
             .orElseThrow(() -> new IllegalArgumentException("Event not found"));
 
-        if (event.getStart_time().before(Timestamp.from(Instant.now()))) {
+        if (event.getStartTime().before(Timestamp.from(Instant.now()))) {
             throw new IllegalStateException(
                 "Cannot unregister from an event that has already started"
             );
@@ -99,7 +99,7 @@ public class RegistrationService {
             .findById(eventId)
             .orElseThrow(() -> new IllegalArgumentException("Event not found"));
 
-        if (!event.getCreated_by().getId().equals(currentUser.getId())) {
+        if (!event.getCreatedBy().getId().equals(currentUser.getId())) {
             throw new UnauthedException(
                 "Only the event creator can view registrations"
             );

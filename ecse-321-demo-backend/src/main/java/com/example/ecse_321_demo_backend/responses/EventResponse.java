@@ -26,8 +26,8 @@ public class EventResponse {
         response.setId(event.getId());
         response.setEventType(event.getEventType());
         response.setDescription(event.getDescription());
-        response.setStartTime(event.getStart_time());
-        response.setEndTime(event.getEnd_time());
+        response.setStartTime(event.getStartTime());
+        response.setEndTime(event.getEndTime());
         response.setRemainingSeats(
             event.getCapacity() - event.getParticipantsCount()
         );
@@ -37,8 +37,8 @@ public class EventResponse {
         } else if (event instanceof OnlineEvent) {
             response.setLocationOrLink(((OnlineEvent) event).getInviteLink());
         }
-        response.setCreatedBy(event.getCreated_by().getUsername());
-        response.setCreatedAt(event.getCreated_at());
+        response.setCreatedBy(event.getCreatedBy().getUsername());
+        response.setCreatedAt(event.getCreatedAt());
         return response;
     }
 }
