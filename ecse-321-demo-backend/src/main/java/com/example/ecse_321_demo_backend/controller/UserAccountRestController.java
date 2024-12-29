@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserAccountRestController {
 
     @Autowired
@@ -32,6 +32,7 @@ public class UserAccountRestController {
             request.getUsername(),
             request.getPassword()
         );
+
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -39,6 +40,7 @@ public class UserAccountRestController {
     @RequireUser
     public ResponseEntity<?> deleteUserAccount(@PathVariable UUID userId) {
         userAccountService.deleteUserAccount(userId);
+
         return ResponseEntity.ok().build();
     }
 
@@ -50,6 +52,7 @@ public class UserAccountRestController {
             request.getUsername(),
             request.getPassword()
         );
+
         return ResponseEntity.ok(
             new LoginResponse(user.getId(), user.getUsername())
         );
