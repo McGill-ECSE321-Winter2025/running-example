@@ -14,26 +14,35 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 public class UserAuthInterceptor implements HandlerInterceptor {
 
-    @Autowired
-    private UserAccountRepository userAccountRepository;
+    private final UserAccountRepository userAccountRepository;
+
+    private final UserContext userContext;
 
     @Autowired
-    private UserContext userContext;
+    public UserAuthInterceptor(
+        UserAccountRepository userAccountRepository,
+        UserContext userContext
+    ) {
+        this.userAccountRepository = userAccountRepository;
+        this.userContext = userContext;
+    }
 
     @Override
     public boolean preHandle(
         HttpServletRequest request,
         HttpServletResponse response,
         Object handler
-    ) throws Exception {
+    ) throws UnauthedException {
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
 
         HandlerMethod handlerMethod = (HandlerMethod) handler;
+
         RequireUser requireUser = handlerMethod.getMethodAnnotation(
             RequireUser.class
         );
+
         if (requireUser == null) {
             requireUser = handlerMethod
                 .getBeanType()
@@ -42,21 +51,23 @@ public class UserAuthInterceptor implements HandlerInterceptor {
 
         if (requireUser != null) {
             String userIdHeader = request.getHeader("User-Id");
+
             if (userIdHeader == null) {
                 throw new UnauthedException("No User-Id header provided");
             }
 
             try {
                 UUID userId = UUID.fromString(userIdHeader);
+
                 UserAccount user = userAccountRepository
                     .findById(userId)
                     .orElseThrow(() -> new UnauthedException("User not found"));
+
                 userContext.setCurrentUser(user);
             } catch (IllegalArgumentException e) {
                 throw new UnauthedException("Invalid User-Id format");
             }
         }
-
         return true;
     }
 
@@ -66,7 +77,7 @@ public class UserAuthInterceptor implements HandlerInterceptor {
         HttpServletResponse response,
         Object handler,
         Exception ex
-    ) throws Exception {
+    ) {
         userContext.clear();
     }
 }

@@ -1,13 +1,12 @@
 package com.example.ecse_321_demo_backend.dao;
 
-import java.util.UUID;
+import com.example.ecse_321_demo_backend.models.UserAccount;
 import java.util.Optional;
-
+import java.util.UUID;
 import org.springframework.data.repository.CrudRepository;
 
-import com.example.ecse_321_demo_backend.models.UserAccount;
-
-public interface UserAccountRepository extends CrudRepository<UserAccount, UUID> {
+public interface UserAccountRepository
+    extends CrudRepository<UserAccount, UUID> {
     Optional<UserAccount> findById(UUID id);
     Optional<UserAccount> findByUsername(String username);
 }

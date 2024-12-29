@@ -13,6 +13,7 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source =
             new UrlBasedCorsConfigurationSource();
+
         CorsConfiguration config = new CorsConfiguration();
 
         config.addAllowedOrigin("http://localhost:5173");
@@ -24,6 +25,7 @@ public class CorsConfig {
         config.setAllowCredentials(true);
 
         source.registerCorsConfiguration("/api/**", config);
+
         return new CorsFilter(source);
     }
 }

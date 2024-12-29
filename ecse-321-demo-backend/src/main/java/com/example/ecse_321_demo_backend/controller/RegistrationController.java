@@ -19,8 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequireUser
 public class RegistrationController {
 
+    private final RegistrationService registrationService;
+
     @Autowired
-    private RegistrationService registrationService;
+    public RegistrationController(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
 
     @PostMapping("/{eventId}")
     public ResponseEntity<?> registerForEvent(@PathVariable UUID eventId) {

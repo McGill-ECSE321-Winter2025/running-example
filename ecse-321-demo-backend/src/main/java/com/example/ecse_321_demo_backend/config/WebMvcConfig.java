@@ -9,8 +9,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
+    private final UserAuthInterceptor userAuthenticationInterceptor;
+
     @Autowired
-    private UserAuthInterceptor userAuthenticationInterceptor;
+    public WebMvcConfig(UserAuthInterceptor userAuthenticationInterceptor) {
+        this.userAuthenticationInterceptor = userAuthenticationInterceptor;
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

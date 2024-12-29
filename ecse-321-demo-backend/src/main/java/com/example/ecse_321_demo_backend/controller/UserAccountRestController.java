@@ -21,8 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserAccountRestController {
 
+    private final UserAccountService userAccountService;
+
     @Autowired
-    private UserAccountService userAccountService;
+    public UserAccountRestController(UserAccountService userAccountService) {
+        this.userAccountService = userAccountService;
+    }
 
     @PostMapping
     public ResponseEntity<?> createUserAccount(
