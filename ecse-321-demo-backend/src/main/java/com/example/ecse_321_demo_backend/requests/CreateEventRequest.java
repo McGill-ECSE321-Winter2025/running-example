@@ -8,9 +8,14 @@ import lombok.Data;
 public class CreateEventRequest {
 
     private EventType eventType;
+
     private String description;
+
     private Timestamp startTime;
+
     private Timestamp endTime;
+
     private Integer capacity;
+
     private String locationOrLink;
 }

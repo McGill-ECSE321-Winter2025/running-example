@@ -1,10 +1,8 @@
 package com.example.ecse_321_demo_backend.requests;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class LoginRequest {
 
     private String username;
