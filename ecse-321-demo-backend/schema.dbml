@@ -1,31 +1,27 @@
-Table locations {
-  id uuid [primary key]
-  created_by uuid
-  created_at timestamp
-  description text
-  capacity integer
-}
-
 Table events {
   id uuid [primary key]
   created_at timestamp
   description text
   start_time timestamp
   end_time timestamp
-  location uuid
+  participants_count int
+  capacity int
 }
 
 Table online_events {
   id uuid
+  link varchar
 }
 
 Table in_person_events {
   id uuid
+  location varchar
 }
 
 Table registration {
   user_id uuid
   event_id uuid
+  registered_at timestamp
 
   indexes {
     (user_id, event_id) [pk]
@@ -44,5 +40,3 @@ Ref: events.id < registration.event_id
 Ref: users.id < registration.user_id
 Ref: online_events.id > events.id
 Ref: in_person_events.id > events.id
-Ref: events.location > locations.id
-Ref: users.id < locations.created_by
