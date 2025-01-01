@@ -33,9 +33,9 @@ INSERT INTO events (
 SELECT
     md5(random()::text)::uuid,
     CASE
-        WHEN generate_series <= 10 THEN '11111111-1111-1111-1111-111111111111'::uuid
-        WHEN generate_series <= 20 THEN '22222222-2222-2222-2222-222222222222'::uuid
-        WHEN generate_series <= 30 THEN '33333333-3333-3333-3333-333333333333'::uuid
+        WHEN generate_series <= 25 THEN '11111111-1111-1111-1111-111111111111'::uuid
+        WHEN generate_series <= 50 THEN '22222222-2222-2222-2222-222222222222'::uuid
+        WHEN generate_series <= 75 THEN '33333333-3333-3333-3333-333333333333'::uuid
         ELSE '44444444-4444-4444-4444-444444444444'::uuid
     END,
     CURRENT_TIMESTAMP + (random() * interval '10 days'),
@@ -71,9 +71,9 @@ INSERT INTO events (
 SELECT
     md5(random()::text)::uuid,
     CASE
-        WHEN generate_series <= 10 THEN '11111111-1111-1111-1111-111111111111'::uuid
-        WHEN generate_series <= 20 THEN '22222222-2222-2222-2222-222222222222'::uuid
-        WHEN generate_series <= 30 THEN '33333333-3333-3333-3333-333333333333'::uuid
+        WHEN generate_series <= 25 THEN '11111111-1111-1111-1111-111111111111'::uuid
+        WHEN generate_series <= 50 THEN '22222222-2222-2222-2222-222222222222'::uuid
+        WHEN generate_series <= 75 THEN '33333333-3333-3333-3333-333333333333'::uuid
         ELSE '44444444-4444-4444-4444-444444444444'::uuid
     END,
     CURRENT_TIMESTAMP + (random() * interval '10 days'),
@@ -110,18 +110,18 @@ WITH RECURSIVE RandomRegistrations AS (
     WHERE e.capacity > e.participants_count  -- Only consider events with space
 ),
 FilteredRegistrations AS (
-    -- Take 8 random registrations per user (4 online, 4 in-person)
     SELECT
         rr.user_id,
         rr.event_id
     FROM RandomRegistrations rr
     JOIN events e ON e.id = rr.event_id
-    WHERE rr.reg_number <= 50  -- Take 50 registrations per user
+    WHERE rr.reg_number <= 25  -- Take 25 registrations per user
     AND e.created_by_id != rr.user_id  -- Users can't register for their own events
 )
 INSERT INTO registration (event_id, user_id, registered_at)
 SELECT DISTINCT event_id, user_id, CURRENT_TIMESTAMP + (random() * interval '30 days')
-FROM FilteredRegistrations;
+FROM FilteredRegistrations
+WHERE (SELECT COUNT(*) FROM registration r WHERE r.event_id = FilteredRegistrations.event_id) < (SELECT capacity FROM events e WHERE e.id = FilteredRegistrations.event_id);
 
 -- Update participant counts
 UPDATE events e
