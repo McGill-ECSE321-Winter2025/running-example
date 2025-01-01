@@ -39,10 +39,10 @@
 
         <div class="form-item">
           <IftaLabel>
-            <InputText name="locationLink" />
-            <label for="locationLink">{{ locationLinkLabel }}</label>
+            <InputText name="locationOrLink" />
+            <label for="locationOrLink">{{ locationLinkLabel }}</label>
             <Message
-              v-if="$form.locationLink?.invalid"
+              v-if="$form.locationOrLink?.invalid"
               severity="error"
               size="small"
               variant="simple"
@@ -55,15 +55,10 @@
         <div class="form-item">
           <!-- THIS SHOULD BE AN INPUTNUMBER BUT IT'S ACTUALLY BUSTED AND IDK HOW TO FIX IT -->
           <IftaLabel>
-            <InputText name="eventCapacity" fluid />
-            <label for="eventCapacity">Event Capacity</label>
-            <Message
-              v-if="$form.eventCapacity?.invalid"
-              severity="error"
-              size="small"
-              variant="simple"
-            >
-              {{ $form.eventCapacity.error?.message }}
+            <InputText name="capacity" fluid />
+            <label for="capacity">Event Capacity</label>
+            <Message v-if="$form.capacity?.invalid" severity="error" size="small" variant="simple">
+              {{ $form.capacity.error?.message }}
             </Message>
           </IftaLabel>
         </div>
@@ -97,6 +92,7 @@
 import { ref, computed } from 'vue'
 import { Form } from '@primevue/forms'
 import { useToast } from 'primevue/usetoast'
+import { eventService } from '@/services/eventService'
 import Button from 'primevue/button'
 import Select from 'primevue/select'
 import Popover from 'primevue/popover'
@@ -123,9 +119,9 @@ const formValues = ref({
   description: '',
   startTime: null,
   endTime: null,
-  locationLink: '',
+  locationOrLink: '',
   eventType: '',
-  eventCapacity: null,
+  capacity: null,
 })
 
 //This function is stupid, you should fix this...
@@ -148,21 +144,21 @@ const resolver = ({ values }) => {
     errors.endTime = [{ message: 'End time must be after start time' }]
   }
 
-  if (!values.locationLink) {
-    errors.locationLink = [{ message: 'Location/Link is required' }]
+  if (!values.locationOrLink) {
+    errors.locationOrLink = [{ message: 'Location/Link is required' }]
   }
 
-  if (!values.eventCapacity) {
-    errors.eventCapacity = [{ message: 'Capacity is required' }]
-  } else if (isNaN(parseInt(values.eventCapacity)) || parseInt(values.eventCapacity) <= 0) {
-    errors.eventCapacity = [{ message: 'Capacity must be a positive number' }]
+  if (!values.capacity) {
+    errors.capacity = [{ message: 'Capacity is required' }]
+  } else if (isNaN(parseInt(values.capacity)) || parseInt(values.capacity) <= 0) {
+    errors.apacity = [{ message: 'Capacity must be a positive number' }]
   }
 
   if (!values.eventType) {
     errors.eventType = [{ message: 'Event type is required' }]
   }
 
-  return { errors }
+  return { errors, values }
 }
 
 //This doesn't work, fix it eventually
@@ -177,13 +173,29 @@ const locationLinkLabel = computed(() => {
   }
 })
 
-const onFormSubmit = ({ valid }) => {
+const onFormSubmit = async ({ values, valid }) => {
   if (valid) {
-    toast.add({
-      severity: 'success',
-      summary: 'Event created',
-      life: 3000,
-    })
+    try {
+      const eventData = {
+        ...values,
+        eventType: values.eventType.value,
+        capacity: parseInt(values.capacity),
+      }
+      await eventService.createEvent(eventData)
+      toast.add({
+        severity: 'success',
+        summary: 'Event created',
+        life: 3000,
+      })
+      op.value.hide()
+    } catch (error) {
+      toast.add({
+        severity: 'error',
+        summary: 'Failed to create event',
+        detail: error.message,
+        life: 3000,
+      })
+    }
   }
 }
 </script>
