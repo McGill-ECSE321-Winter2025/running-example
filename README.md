@@ -1,6 +1,6 @@
 # Demo Project For ECSE 321
 ## Overview
-![image](https://github.com/user-attachments/assets/4ea12433-8f65-409b-ae59-0476bf6bf6c9)
+![Image 5088x3502](https://github.com/user-attachments/assets/138e08da-3db1-4b76-8e25-fdc013421139)
 A simple demo projet for ECSE 321 using the tech stack taught in class (Java Spring, PostgreSQL and Vue)  
 
 Parts of the implementation are *deliberately* incomplete, insufficient or straight up **bad**, so that students can explore on their own how to implement them
@@ -14,6 +14,9 @@ POSTGRES_DB=running-example
 POSTGRES_USER=ray
 POSTGRES_PASSWORD=ummmm
 
+PGADMIN_DEFAULT_EMAIL=admin@gmail.com
+PGADMIN_DEFAULT_PASSWORD=password
+
 VITE_API_URL=http://localhost:8080/
 ```
 
@@ -24,14 +27,14 @@ The demo is configured to initialize the database with a set of dummy data. All 
 - jean.paul
 
 > [!WARNING]
-> The demo uses ports 5432 (Postgres), 8080 (Backend) and 5173 (Frontend). You may get conflicting port issues if you are running the demo project and working on your own project, be sure to kill the demo project before starting your own, or use different port numbers
+> The demo uses ports 5432 (Postgres), 5050 (PGAdmin), 8080 (Backend) and 5173 (Frontend). You may get conflicting port issues if you are running the demo project and working on your own project, be sure to kill the demo project before starting your own, or use different port numbers
   
 ### Using Docker (You should use this)
 If you have Docker installed, it is as simple as cloning the repo and running in the parent directory
 ```
 docker-compose up -d
 ```
-Your backend will be available at `localhost:8080`, and your frontend at `localhost:5173`.
+Your backend will be available at `localhost:8080`, and your frontend at `localhost:5173`. You have a database visualizer (something similar to Mongo Compass) at `localhost:5050` with the credentials you defined in your .env if you require
 
 - If you have made changes to the data and wish to restart fresh, run `docker-compose down -v` and then `docker-compose up -d`
 
@@ -40,7 +43,7 @@ Your backend will be available at `localhost:8080`, and your frontend at `localh
 > [!NOTE]
 > If you have the dockerized frontend running, and you run `npm run dev` locally (non-dockerized), it will open another instance of the frontend on a different port (usually 5174). To work around this, either kill the frontend container and rerun `npm run dev` to restart it on port 5173 or add 5174 to the permitted sources in CORS
 ### Using Raw Binaries
-1. Ensure you have an instance of Postgres running on your system. Ensure that the `POSTGRES_USER` and `POSTGRES_PASSWORD` fields in your `.env` file matches the credentials of your Postgres instance
+1. Ensure you have an instance of Postgres running on your system. Ensure that the `POSTGRES_USER` and `POSTGRES_PASSWORD` fields in your `.env` file matches the credentials of your Postgres instance. 
 2. From the parent directory, navigate into the backend directory. Run the following commands:
    ```
    ./gradleW build -x test
