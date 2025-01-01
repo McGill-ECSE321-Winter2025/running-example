@@ -70,7 +70,11 @@
                   scrollHeight="200px"
                 >
                   <Column field="username" header="Username" />
-                  <Column field="registrationDate" header="Registration Date" />
+                  <Column header="Registration Date">
+                    <template #body="slotProps">
+                      {{ formatDate(slotProps.data.registeredAt) }}
+                    </template>
+                  </Column>
                   <Column class="w-24 !text-end">
                     <template #body>
                       <Button
