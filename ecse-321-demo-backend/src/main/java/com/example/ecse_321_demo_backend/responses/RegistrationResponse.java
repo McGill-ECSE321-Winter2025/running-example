@@ -9,10 +9,15 @@ import lombok.Data;
 public class RegistrationResponse {
 
     private UUID userId;
+
     private String username;
+
     private String creatorUsername;
+
     private UUID eventId;
+
     private String eventDescription;
+
     private Timestamp registeredAt;
 
     public static RegistrationResponse fromRegistration(
@@ -27,6 +32,7 @@ public class RegistrationResponse {
         response.setEventId(registration.getEvent().getId());
         response.setEventDescription(registration.getEvent().getDescription());
         response.setRegisteredAt(registration.getRegisteredAt());
+
         return response;
     }
 }

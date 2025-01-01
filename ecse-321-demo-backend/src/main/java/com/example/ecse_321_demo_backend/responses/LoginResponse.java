@@ -7,5 +7,6 @@ import lombok.Data;
 public class LoginResponse {
 
     private final UUID userId;
+
     private final String username;
 }
