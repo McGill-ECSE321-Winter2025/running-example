@@ -4,8 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.example.ecse_321_demo_backend.dao.UserAccountRepository;
 import com.example.ecse_321_demo_backend.models.UserAccount;
-import com.example.ecse_321_demo_backend.requests.LoginRequest;
-import com.example.ecse_321_demo_backend.requests.UserAccountRequest;
+import com.example.ecse_321_demo_backend.requests.AuthRequest;
 import com.example.ecse_321_demo_backend.responses.LoginResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -44,7 +43,7 @@ public class UserAccountIntegrationTests {
 
     @Test
     public void testCreateUserAccount() {
-        UserAccountRequest request = new UserAccountRequest();
+        AuthRequest request = new AuthRequest();
         request.setUsername("newuser");
         request.setPassword("password123");
 
@@ -63,7 +62,7 @@ public class UserAccountIntegrationTests {
         UserAccount user = new UserAccount("loginuser", "password123");
         userAccountRepository.save(user);
 
-        LoginRequest loginRequest = new LoginRequest();
+        AuthRequest loginRequest = new AuthRequest();
         loginRequest.setUsername("loginuser");
         loginRequest.setPassword("password123");
 
@@ -87,12 +86,13 @@ public class UserAccountIntegrationTests {
         headers.set("User-Id", user.getId().toString());
         HttpEntity<?> requestEntity = new HttpEntity<>(headers);
 
-        ResponseEntity<Void> response = restTemplate.exchange(
+        restTemplate.exchange(
             createURLWithPort("/users/" + user.getId()),
             HttpMethod.DELETE,
             requestEntity,
             Void.class
         );
+
         restTemplate.delete(createURLWithPort("/users/" + user.getId()));
 
         assertFalse(userAccountRepository.findById(user.getId()).isPresent());
@@ -103,7 +103,7 @@ public class UserAccountIntegrationTests {
         UserAccount user = new UserAccount("duplicate", "password123");
         userAccountRepository.save(user);
 
-        UserAccountRequest request = new UserAccountRequest();
+        AuthRequest request = new AuthRequest();
         request.setUsername("duplicate");
         request.setPassword("differentpassword");
 

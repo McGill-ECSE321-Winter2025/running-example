@@ -2,8 +2,7 @@ package com.example.ecse_321_demo_backend.controller;
 
 import com.example.ecse_321_demo_backend.middleware.RequireUser;
 import com.example.ecse_321_demo_backend.models.UserAccount;
-import com.example.ecse_321_demo_backend.requests.LoginRequest;
-import com.example.ecse_321_demo_backend.requests.UserAccountRequest;
+import com.example.ecse_321_demo_backend.requests.AuthRequest;
 import com.example.ecse_321_demo_backend.responses.LoginResponse;
 import com.example.ecse_321_demo_backend.service.UserAccountService;
 import java.util.UUID;
@@ -30,13 +29,9 @@ public class UserAccountRestController {
 
     @PostMapping
     public ResponseEntity<?> createUserAccount(
-        @RequestBody UserAccountRequest request
+        @RequestBody AuthRequest request
     ) {
-        userAccountService.createUserAccount(
-            request.getUsername(),
-            request.getPassword()
-        );
-
+        userAccountService.createUserAccount(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -44,19 +39,14 @@ public class UserAccountRestController {
     @RequireUser
     public ResponseEntity<?> deleteUserAccount(@PathVariable UUID userId) {
         userAccountService.deleteUserAccount(userId);
-
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(
-        @RequestBody LoginRequest request
+        @RequestBody AuthRequest request
     ) {
-        UserAccount user = userAccountService.login(
-            request.getUsername(),
-            request.getPassword()
-        );
-
+        UserAccount user = userAccountService.login(request);
         return ResponseEntity.ok(
             new LoginResponse(user.getId(), user.getUsername())
         );

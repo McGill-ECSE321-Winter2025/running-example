@@ -21,11 +21,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class EventService {
 
-    @Autowired
-    private EventRepository eventRepository;
+    private final EventRepository eventRepository;
+
+    private final UserContext userContext;
 
     @Autowired
-    private UserContext userContext;
+    public EventService(
+        EventRepository eventRepository,
+        UserContext userContext
+    ) {
+        this.eventRepository = eventRepository;
+        this.userContext = userContext;
+    }
 
     @Transactional
     public void createEvent(CreateEventRequest request) {
@@ -34,6 +41,7 @@ public class EventService {
         validateEventTimes(request.getStartTime(), request.getEndTime());
 
         Event event;
+
         if (request.getEventType() == EventType.ONLINE) {
             event = new OnlineEvent(
                 creator,
@@ -96,11 +104,9 @@ public class EventService {
 
     @Transactional(readOnly = true)
     public Event getEvent(UUID eventId) {
-        Event event = eventRepository
+        return eventRepository
             .findById(eventId)
             .orElseThrow(() -> new IllegalArgumentException("Event not found"));
-
-        return event;
     }
 
     @Transactional(readOnly = true)

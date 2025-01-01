@@ -18,18 +18,27 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RegistrationService {
 
-    @Autowired
-    private RegistrationRepository registrationRepository;
+    private final RegistrationRepository registrationRepository;
+
+    private final EventRepository eventRepository;
+
+    private final UserContext userContext;
 
     @Autowired
-    private EventRepository eventRepository;
-
-    @Autowired
-    private UserContext userContext;
+    public RegistrationService(
+        RegistrationRepository registrationRepository,
+        EventRepository eventRepository,
+        UserContext userContext
+    ) {
+        this.registrationRepository = registrationRepository;
+        this.eventRepository = eventRepository;
+        this.userContext = userContext;
+    }
 
     @Transactional
     public void registerForEvent(UUID eventId) {
         UserAccount user = userContext.getCurrentUser();
+
         Event event = eventRepository
             .findById(eventId)
             .orElseThrow(() -> new IllegalArgumentException("Event not found"));
@@ -62,6 +71,7 @@ public class RegistrationService {
     @Transactional
     public void unregisterFromEvent(UUID eventId) {
         UserAccount user = userContext.getCurrentUser();
+
         Event event = eventRepository
             .findById(eventId)
             .orElseThrow(() -> new IllegalArgumentException("Event not found"));
@@ -89,12 +99,14 @@ public class RegistrationService {
     @Transactional(readOnly = true)
     public List<Registration> getUserRegistrations() {
         UserAccount user = userContext.getCurrentUser();
+
         return registrationRepository.findByUser(user);
     }
 
     @Transactional(readOnly = true)
     public List<Registration> getEventRegistrations(UUID eventId) {
         UserAccount currentUser = userContext.getCurrentUser();
+
         Event event = eventRepository
             .findById(eventId)
             .orElseThrow(() -> new IllegalArgumentException("Event not found"));

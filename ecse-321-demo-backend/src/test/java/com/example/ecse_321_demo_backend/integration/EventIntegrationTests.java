@@ -180,7 +180,10 @@ public class EventIntegrationTests {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertTrue(response.getBody().length > 0);
-        assertEquals(testUser.getId(), response.getBody()[0].getCreatedBy());
+        assertEquals(
+            testUser.getUsername(),
+            response.getBody()[0].getCreatedBy()
+        );
     }
 
     @Test
