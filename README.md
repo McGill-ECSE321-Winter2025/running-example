@@ -68,10 +68,10 @@ If you require, there is also a database visualizer bundled (something similar t
    Your frontend should be available at `localhost:5173`
 
 ## Technical Stuff and Notes
-### Class Diagram
+### Relational Schema
 <img width="995" alt="Screenshot 2025-01-01 at 7 26 59 PM" src="https://github.com/user-attachments/assets/f63a6a88-723d-4042-bd44-4940f776f54b" />
 
-The demo uses a simple class diagram that demonstrates the most commonly used JPA patterns you may seen in your project
+The demo uses a simple relational schema that demonstrates the most commonly used JPA patterns you may seen in your project
 - Single level inheritance on Events using the single table strategy
 - OneToMany and ManyToOne annotations on Events and Users
 - Composite primary key on Registrations
